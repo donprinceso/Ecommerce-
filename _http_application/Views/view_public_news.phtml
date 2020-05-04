@@ -1,0 +1,195 @@
+<?php
+
+use application\locations\Url;
+use application\model\General;
+use application\model\Links;
+
+if (!isset($View_Controller)) die("View Controller not found");
+?>
+
+<!doctype html>
+
+<html class="no-touch no-js">
+<!--<![endif]-->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<base href="<?php Url::url() ?><!--" />
+<?php $View_Controller->Load()->widget()->Load("public-head") ?>
+
+<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+
+<?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
+
+<main class="wrapper main-content" role="main">
+
+
+    <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+        <a href="index" title="Back to the frontpage">Home</a>
+
+
+
+        <span class="divider" aria-hidden="true">&rsaquo;</span>
+
+        <span>News</span>
+
+
+
+    </nav>
+
+
+
+    <div class="grid grid-border">
+
+        <div class="grid-item large--four-fifths">
+            <div class="grid">
+                <div class="grid-item large--ten-twelfths">
+
+
+                    <h1>News</h1>
+
+
+
+
+                    <h2><a href="news/the-big-launch.html">The big launch</a></h2>
+                    <p class="text-light">
+
+
+                        Posted by <strong>John Doe</strong> on <strong><time pubdate datetime="2017-10-25">Oct 25, 2017</time></strong>
+                    </p>
+
+                    <div class="rte">
+
+
+                        <p>After much planning, decorating, sourcing, packaging, pricing, and more, it was time to launch. Celebrating with a small party for friends, family, and everyone in between, we finally shared our brand and products with the world. There’s no one way to start a business, so it was great to see everyone that helped us find our own way here in one room with us. Our launch was the perfect time to showcase our new collections and share some of our stories. We just want to say thanks to everyone who has supported us on our journey, and we can’t wait...</p>
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+                            <a href="news/the-big-launch.html#comments">
+                                1 comment
+                            </a>
+                        </li>
+
+
+
+                        <li>
+                            <span>Tags:</span>
+
+                            <a href="news/tagged/store.html">store</a>,
+
+                            <a href="news/tagged/story.html">story</a>
+
+                        </li>
+
+
+                    </ul>
+
+                    <p><a href="news/the-big-launch.html">Read more →</a></p>
+
+
+
+                    <h2><a href="news/14623879-first-post.html">Welcome to our world!</a></h2>
+                    <p class="text-light">
+
+
+                        Posted by <strong>John Doe</strong> on <strong><time pubdate datetime="2014-06-17">Jun 17, 2014</time></strong>
+                    </p>
+
+                    <div class="rte">
+
+
+                        <p>Our story began in 2001 in a small studio in the middle of nowhere. With only one desk and next to no free time, our brand was born. Our passion for unique design and collaboration brought our vision, and products, to life.
+                            Our products bring together the finest materials and stunning design to create something very special. We believe in quality, care, and creating unique products that everyone can enjoy. Colorful, creative, and inspired by what we see everyday, each product represents what we love about the world we live in. We hope they’ll inspire you too. </p>
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+                            <a href="news/14623879-first-post.html#comments">
+                                0 comment
+                            </a>
+                        </li>
+
+
+
+                        <li>
+                            <span>Tags:</span>
+
+                            <a href="news/tagged/digital.html">digital</a>,
+
+                            <a href="news/tagged/products.html">products</a>,
+
+                            <a href="news/tagged/story.html">story</a>
+
+                        </li>
+
+
+                    </ul>
+
+                    <p><a href="news/14623879-first-post.html">Read more →</a></p>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar grid-item large--one-fifth grid-border--left">
+            <h3 class="h4">Recent Articles</h3>
+
+            <p>
+                <a href="news/the-big-launch.html">The big launch</a>
+                <br>
+                <time pubdate datetime="2017-10-25">
+                    <em class="text-light">Oct 25, 2017</em>
+                </time>
+            </p>
+
+            <p>
+                <a href="news/14623879-first-post.html">Welcome to our world!</a>
+                <br>
+                <time pubdate datetime="2014-06-17">
+                    <em class="text-light">Jun 17, 2014</em>
+                </time>
+            </p>
+
+
+
+            <h4>Collection</h4>
+            <ul>
+
+
+                <li><a href="news/tagged/digital.html" title="Show articles tagged digital">digital</a></li>
+
+
+
+                <li><a href="news/tagged/products.html" title="Show articles tagged products">products</a></li>
+
+
+
+                <li><a href="news/tagged/store.html" title="Show articles tagged store">store</a></li>
+
+
+
+                <li><a href="news/tagged/story.html" title="Show articles tagged story">story</a></li>
+
+
+            </ul>
+
+
+        </aside>
+    </div>
+
+
+
+</main>
+
+<?php $View_Controller->Load()->widget()->Load("public-footer") ?>
+</body>
+
+</html>

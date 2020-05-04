@@ -1,0 +1,96 @@
+Options -Indexes
+DirectoryIndex t-index.php
+
+
+RewriteEngine On
+#RewriteCond %{SERVER_PORT} 80
+#RewriteRule ^(.*)$ https://www.rucove.com/$1 [R,L]
+
+
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^(.+)*$ t-index.php?query=$1 [QSA,L]
+
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+
+<FilesMatch "\.(htaccess|htpasswd|phtml|module|ini|log|sh|inc|bak|cache)$">
+	Order Allow,Deny
+	Deny from all
+</FilesMatch>
+
+
+RewriteRule ^_http_application[AB]$ - [R=404]
+
+
+<ifModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 1 seconds"
+
+	<FilesMatch "\.(gif|jpg|jpeg|png|js|css)$">
+		ExpiresDefault "access plus 5604800 seconds"
+		Header set Cache-Control "public"
+	</FilesMatch>
+
+	<FilesMatch "\.(html)$">
+		ExpiresDefault "modification plus 5 days"
+		Header set Cache-Control "public"
+	</FilesMatch>
+
+	<FilesMatch "\.(php)$">
+		Header set Cache-Control "private"
+	</FilesMatch>
+
+</ifModule>
+
+
+<IfModule version.c>
+  <IfModule filter_module.c>
+    <IfVersion >= 2.4>
+      FilterDeclare   COMPRESS
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'text/html'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'text/css'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'text/plain'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'text/xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'text/x-component'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/javascript'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/json'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/xhtml+xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/rss+xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/atom+xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/vnd.ms-fontobject'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'image/svg+xml'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'image/x-icon'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'application/x-font-ttf'"
+      FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = 'font/opentype'"
+      FilterChain     COMPRESS
+      FilterProtocol  COMPRESS  DEFLATE change=yes;byteranges=no
+    </IfVersion>
+    <IfVersion <= 2.2>
+      FilterDeclare   COMPRESS
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/html
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/css
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/plain
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/x-component
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/javascript
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/json
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xhtml+xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/rss+xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/atom+xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/vnd.ms-fontobject
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/svg+xml
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/x-icon
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/x-font-ttf
+      FilterProvider  COMPRESS  DEFLATE resp=Content-Type $font/opentype
+      FilterChain     COMPRESS
+      FilterProtocol  COMPRESS  DEFLATE change=yes;byteranges=no
+    </IfVersion>
+  </IfModule>
+</IfModule>

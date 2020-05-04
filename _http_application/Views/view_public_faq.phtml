@@ -1,0 +1,78 @@
+<?php
+
+use application\locations\Url;
+use application\model\General;
+use application\model\Links;
+
+if (!isset($View_Controller)) die("View Controller not found");
+?>
+
+<!doctype html>
+
+<html class="no-touch no-js">
+<!--<![endif]-->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<base href="<?php Url::url() ?><!--" />
+<?php $View_Controller->Load()->widget()->Load("public-head") ?>
+
+<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+
+<?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
+
+<main class="wrapper main-content" role="main">
+
+
+    <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+        <a href="index" title="Back to the frontpage">Home</a>
+
+
+
+        <span class="divider" aria-hidden="true">&rsaquo;</span>
+        <span>FAQ</span>
+
+
+    </nav>
+
+
+
+    <div class="grid">
+
+        <div class="grid-item large--two-thirds push--large--one-sixth">
+
+            <h1>FAQ</h1>
+
+            <div class="rte">
+                <h2><b>Do you ship overseas?</b></h2>
+                <p><span style="font-weight: 400;">Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals. </span></p>
+                <br>
+                <h2><b>How long will it take to get my order?</b></h2>
+                <p><span style="font-weight: 400;">It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</span></p>
+                <br>
+                <h2><b>What shipping carriers do you use?</b></h2>
+                <p><span style="font-weight: 400;">We use all major carriers, and local courier partners. You’ll be asked to select a delivery method during checkout.</span></p>
+                <br>
+                <h2><b>Can I return my product?</b></h2>
+                <p><span style="font-weight: 400;">We always aim for make sure our customers love our products, but if you do need to return an order, we’re happy to help. Just email us directly and we’ll take you through the process.</span></p>
+                <br>
+                <h2><b>Can I get my product personalized?</b></h2>
+                <p><span style="font-weight: 400;">It depends on the creator and the product. All options are outlined on the product page, so look out for customization options there.</span></p>
+                <br>
+                <h2><b>Can I sign up to your newsletter?</b></h2>
+                <p><span style="font-weight: 400;">Yes! Just enter your email here, and you’ll be added to our subscription list. You’ll be sent updates, exclusive offers, and much more.</span></p>
+                <br>
+                <h2><b>Are these Q&amp;As real?</b></h2>
+                <p><span style="font-weight: 400;">No. This is demonstration content, designed to showcase how these page could look with your own content.</span></p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+<?php $View_Controller->Load()->widget()->Load("public-footer") ?>
+</body>
+
+</html>

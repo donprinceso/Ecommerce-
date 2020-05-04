@@ -1,0 +1,83 @@
+<?php
+
+use application\locations\Url;
+use application\model\General;
+use application\model\Links;
+
+if (!isset($View_Controller)) die("View Controller not found");
+?>
+
+<!doctype html>
+
+<html class="no-touch no-js">
+<!--<![endif]-->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<base href="<?php Url::url() ?><!--" />
+<?php $View_Controller->Load()->widget()->Load("public-head") ?>
+
+<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+
+<?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
+
+<main class="wrapper main-content" role="main">
+
+
+    <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+        <a href="index" title="Back to the frontpage">Home</a>
+
+
+
+        <span class="divider" aria-hidden="true">&rsaquo;</span>
+        <span>Contact Us</span>
+
+
+    </nav>
+
+
+
+    <div class="grid">
+
+        <div class="grid-item large--two-thirds push--large--one-sixth">
+
+            <h2>Contact Us</h2>
+
+            <div class="rte">
+
+            </div>
+
+            <div>
+                <form method="post" action="" id="contact_form" accept-charset="UTF-8" class="contact-form">
+                    <input type="hidden" name="form_type" value="contact" />
+                    <input type="hidden" name="utf8" value="✓" />
+
+                    <div id="contactFormWrapper">
+                        <label for="contactFormName" class="hidden-label">Name</label>
+                        <input type="text" id="contactFormName" name="contact[name]" placeholder="Name" value="">
+
+                        <label for="contactFormEmail" class="hidden-label">Email</label>
+                        <input type="email" id="contactFormEmail" name="contact[email]" placeholder="Email" autocorrect="off" autocapitalize="off" value="">
+
+                        <label for="contactFormPhone" class="hidden-label">Phone Number</label>
+                        <input type="tel" id="contactFormPhone" name="contact[phone]" placeholder="Phone Number" value="">
+
+                        <label for="contactFormMessage" class="hidden-label">Message</label>
+                        <textarea rows="10" id="contactFormMessage" name="contact[body]" placeholder="Message"></textarea>
+
+                        <input type="submit" class="btn right" value="Send">
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+<?php $View_Controller->Load()->widget()->Load("public-footer") ?>
+</body>
+
+</html>

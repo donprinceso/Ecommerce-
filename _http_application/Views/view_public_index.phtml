@@ -1,0 +1,970 @@
+<?php
+
+use application\locations\Url;
+use application\model\General;
+use application\model\Links;
+
+if (!isset($View_Controller)) die("View Controller not found");
+?>
+
+<!doctype html>
+
+<html class="no-touch no-js">
+<!--<![endif]-->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<base href="<?php Url::url() ?><!--" />
+<?php $View_Controller->Load()->widget()->Load("public-head") ?>
+
+<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+
+    <?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
+
+    <main class="wrapper main-content" role="main">
+
+        <!-- BEGIN content_for_index -->
+        <div id="shopify-section-slideshow" class="shopify-section slider-section">
+            <hr>
+            <div class="flexslider" id="heroSlider--slideshow" data-section-id="slideshow" data-section-type="slideshow-section" data-slider-home-auto="false" data-slider-home-rate="5000">
+                <ul class="slides">
+
+                    <li id="slide--slide-0" data-flexslider-index="0">
+
+
+                        <div id="slideShowImageWrapper-slideshow-456956174" class="lazyload__image-wrapper" data-image-id="456956174" style="max-width: 1000px">
+                            <div class="lazyload__image-wrapper no-js" style="padding-top:46.0%;">
+                                <img class="lazyload js " src="browser/customer/images/Mcb.jpg" data-src="browser/customer/images/Mcb.jpg" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="2.1739130434782608" data-sizes="auto" alt="">
+                            </div>
+                        </div>
+
+
+                    </li>
+
+                    <li id="slide--slide-1" data-flexslider-index="1">
+
+
+                        <div id="slideShowImageWrapper-slideshow-456956238" class="lazyload__image-wrapper" data-image-id="456956238" style="max-width: 1000px">
+                            <div class="lazyload__image-wrapper no-js" style="padding-top:46.0%;">
+                                <img class="lazyload js lazypreload" src="browser/customer/images/Mcb.jpg" data-src="browser/customer/images/Mcb.jpg" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="2.1739130434782608" data-sizes="auto" alt="">
+                            </div>
+                        </div>
+
+
+                    </li>
+
+                </ul>
+            </div>
+
+
+
+
+        </div>
+        <div id="shopify-section-1537381536651" class="shopify-section collection-list-section">
+            <div data-section-id="1537381536651" data-section-type="collections-list-template">
+                <hr>
+                <div class="section-header">
+                    <h2 class="h1  section-header--left">Shop For</h2>
+                    <div class="section-header--right">
+                        <a href="">More collections &rsaquo;</a>
+                    </div>
+                </div>
+                <div class="grid-uniform text-center">
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="collection" title="Browse our Accessories collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/infinix-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="infinix">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/infinix-logo.png" srcset="browser/customer/images/infinix-logo.png" alt="infinix" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Infinix</span>
+                        </a>
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="" title="Browse our Cameras collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/samsung-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="samsung">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/samsung-logo.png" srcset="browser/customer/images/samsung-logo.png" alt="samsung" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Samsung</span>
+                        </a>
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="" title="Browse our Lenses collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/gionee-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="gionee">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/gionee-logo.png" srcset="browser/customer/images/gionee-logo.png" alt="gionee" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Gionee</span>
+                        </a>
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="" title="Browse our Cases collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/tecno-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="tecno">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/tecno-logo.png" srcset="browser/customer/images/tecno-logo.png" alt="tecno" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Tecno</span>
+                        </a>
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="" title="Browse our Bags collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/itel-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="itel">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/itel-logo.png" srcset="browser/customer/images/itel-logo.png" alt="itel" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Itel</span>
+                        </a>
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-third large--one-sixth">
+
+                        <a href="" title="Browse our Thumbs Up collection" class="featured-box">
+                            <div class="featured-box--inner">
+                                <div class="featured-box--image  vertical-middle">
+
+
+                                    <div id="" class="lazyload__image-wrapper no-js" style="max-width: 140px;">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="no-js lazyload" data-src="browser/customer/images/apple-logo.png" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="apple">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <noscript>
+                                    <img src="browser/customer/images/apple-logo.png" srcset="browser/customer/images/apple-logo.png" alt="apple" style="opacity:1;">
+                                </noscript>
+
+                            </div>
+                            <span class="featured-box--title">Apple</span>
+                        </a>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div id="shopify-section-1537381470018" class="shopify-section clearfix">
+            <hr>
+            <div id="collection-rows--1537381470018" data-section-id="1537381470018" data-section-type="collection-row-section">
+
+                <div class="section-header">
+                    <p class="h1 section-header--left">Top Sale</p>
+
+                    <div class="section-header--right">
+
+                        <a href="">More Views &rsaquo;</a>
+                    </div>
+
+                </div>
+
+
+                <div class="grid-uniform row-negative-bottom">
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth on-sale">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Hot 6(Typ 006)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Sale price</span>
+                                    <small aria-hidden="true">$18,500<sup>00</sup></small>
+                                    <span class="visually-hidden">$18,500.00</span>
+                                </span>
+
+                                <span class="sale-tag medium--right">Discount $3,450</span>
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/3.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+                                    <noscript>
+                                        <img src="browser/customer/images/3.jpg" srcset="browser/customer/images/3.jpg" alt="" style="opacity:1;">
+                                    </noscript>
+
+
+                                </div>
+                            </div>
+
+                            <p>Spark S( X )</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$15,995<sup>00</sup></small>
+                                    <span class="visually-hidden">$15,995.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+                                    <noscript>
+                                        <img src="browser/customer/images/1.jpg" srcset="browser/customer/images/1.jpg" alt=" " style="opacity:1;">
+                                    </noscript>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica S</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$16,900<sup>00</sup></small>
+                                    <span class="visually-hidden">$16,900.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:99.88412514484357%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/4.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0011600928074247" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+                                    <noscript>
+                                        <img src="browser/customer/images/4.jpg" srcset="browser/customer/images/4.jpg" alt="" style="opacity:1;">
+                                    </noscript>
+
+
+                                </div>
+                            </div>
+
+                            <p>Pro 6</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$60<sup>00</sup></small>
+                                    <span class="visually-hidden">$60.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+                                    <noscript>
+                                        <img src="browser/customer/images/2.jpg" srcset="browser/customer/images/2.jpg" alt="" style="opacity:1;">
+                                    </noscript>
+
+
+                                </div>
+                            </div>
+
+                            <p>Hot S Edition </p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$34,500<sup>00</sup></small>
+                                    <span class="visually-hidden">$34,500.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth on-sale">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/1.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Hot 6(Typ 006)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Sale price</span>
+                                    <small aria-hidden="true">$18,500<sup>00</sup></small>
+                                    <span class="visually-hidden">$18,500.00</span>
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/3.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <p>Spark S( X )</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$15,995<sup>00</sup></small>
+                                    <span class="visually-hidden">$15,995.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <p>Leica S</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$16,900<sup>00</sup></small>
+                                    <span class="visually-hidden">$16,900.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:99.88412514484357%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/4.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0011600928074247" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <p>Pro 6</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$60<sup>00</sup></small>
+                                    <span class="visually-hidden">$60.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-fifth large--one-fifth">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 195px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <p>Hot S Edition </p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+                                    <small aria-hidden="true">$34,500<sup>00</sup></small>
+                                    <span class="visually-hidden">$34,500.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+        <div id="shopify-section-1537381711900" class="shopify-section clearfix">
+            <hr>
+            <div id="collection-rows--1537381711900" data-section-id="1537381711900" data-section-type="collection-row-section">
+
+                <div class="section-header">
+                    <p class="h1 section-header--left">New Featuers</p>
+
+                    <div class="section-header--right">
+
+                        <a href="">More views &rsaquo;</a>
+                    </div>
+
+                </div>
+
+
+                <div class="grid-uniform row-negative-bottom">
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/1.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/3.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/4.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/3.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/4.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/1.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                    <div class="grid-item small--one-half medium--one-quarter large--one-quarter">
+
+                        <a href="" class="product-grid-item">
+                            <div class="product-grid-image">
+                                <div class="product-grid-image--centered">
+
+                                    <div class="lazyload__image-wrapper no-js" style="max-width: 250px">
+                                        <div style="padding-top:100.0%;">
+                                            <img class="lazyload no-js" data-src="browser/customer/images/2.jpg" data-widths="[125, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <p>Leica M (Typ 240)</p>
+
+                            <div class="product-item--price">
+                                <span class="h1 medium--left">
+
+                                    <span class="visually-hidden">Regular price</span>
+
+                                    <small aria-hidden="true">$6,380<sup>00</sup></small>
+                                    <span class="visually-hidden">$6,380.00</span>
+
+
+                                </span>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+    </main>
+
+    <?php $View_Controller->Load()->widget()->Load("public-footer") ?>
+</body>
+
+</html>
