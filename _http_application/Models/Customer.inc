@@ -37,6 +37,17 @@ class Customer{
         }
     }
 
+    /**
+     * @return bool
+     */
+    public function CustomerRequest(){
+        return (isset($_POST) and isset($_POST['Customer_Request']));
+    }
+
+
+    /**
+     * @return bool
+     */
     public function IsLogedin():bool{
         $result = false;
         $database = $this->db;
@@ -67,6 +78,10 @@ class Customer{
         return $result;
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function register(array $data){
         $result = false;
         $database = $this->db;
@@ -119,4 +134,23 @@ class Customer{
         return $result;
     }
 
+    /**
+     * @return bool
+     */
+    public function Signout(){
+        $result = false;
+        $database = $this->db;
+        $cookies = $this->cookies;
+        if($this->user!=null){
+            $cookies->RemoveCookie($this->cookie_id)->RemoveCookie($this->cookie_hash);
+            $update = $database("UPDATE {$this->table} SET lastSeen=:lastseen WHERE id=:id",[':lastseen'=>time(),':id'=>$this->user->id]);
+            if($update->getStatement()->rowCount()){
+                $result = true;
+            }
+        }else{
+            $cookies->RemoveCookie($this->cookie_id)->RemoveCookie($this->cookie_hash);
+            $result = true;
+        }
+        return $result;
+    }
 }

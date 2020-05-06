@@ -37,8 +37,8 @@ if (isset($_POST['tele_tech'])){
                         $result->info = "Email address was not changed.";
                         $result->email = $email;
                     }else{
-                        if(!$Customer->CheckEmailExist($email)){
-                            if($Customer->UpdateEmail($Data->id,$email)){
+                        if(!$customer->CheckEmailExist($email)){
+                            if($customer->UpdateEmail($Data->id,$email)){
                                 $result->success = true;
                                 $result->info = "Email address updated successfully.";
                                 $result->email = $email;
@@ -59,7 +59,7 @@ if (isset($_POST['tele_tech'])){
                 $result = new stdClass();
                 $result->success = false;
 
-                if($Customer->Signout()){
+                if($customer->Signout()){
                     $result->success = true;
                     $result->url = Url::Url();
                     $result->info = "Signed out Successfully.";
@@ -71,20 +71,20 @@ if (isset($_POST['tele_tech'])){
 
         }else{
 
-            if(isset($_POST['customer-signin'])){
+            if(isset($_POST['customer_login'])){
                 $result = new stdClass();
                 $result->success = false;
 
-                $email = strtolower($_POST['username']);
+                $email = strtolower($_POST['email']);
                 $password =  $_POST['password'];
 
-                if((!Validation::email($email) OR !Validation::phone_number($email)) and !Validation::password($password)){
+                if((!Validation::email($email)) and !Validation::password($password)){
                     $email = Validation::sanitize($db->escape($email));
                     $password =  Validation::sanitize($db->escape($password));
-                    if($Customer->Login(['email'=>$email,'password'=>$password])){
-                        $Data = $Customer->DataEmail($email);
+                    if($customer->Login(['email'=>$email,'password'=>$password])){
+                        $Data = $customer->DataEmail($email);
                         $result->success = true;
-                        $result->url = Url::Url_to("");
+                        $result->url = Url::Url_to("login");
                         $result->info = "Login Successfully";
                     }else{
                         $result->info = "Invalid Email or Password";
