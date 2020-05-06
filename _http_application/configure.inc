@@ -74,7 +74,7 @@ define("APP_COOKIE_SAMESITE",'Strict');
 define("APP_DB_HOST", "localhost",true);
 define("APP_DB_USERNAME", "root",true);
 define("APP_DB_PASSWORD", "",true);
-define("APP_DB_NAME", "",true);
+define("APP_DB_NAME", "tele_db",true);
 define("APP_DB_DRIVER", "mysql",true);
 define("APP_DB_PREFIX", "",true);
 define("APP_DB_PCONNECT", true,true);

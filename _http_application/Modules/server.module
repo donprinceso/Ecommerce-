@@ -1,2 +1,109 @@
 <?php
+use application\Application;
+use application\database\Database;
+use application\init\Image;
+use application\init\Mail;
+use application\model\MobileDetector;
+use application\locations\Url;
+use application\security\Validation;
 
+if(!defined("King_Framework")) die("you cannot access config file directly");
+
+$App = new Application();
+$db = new Database();
+$controller = new Application();
+$Image = new Image();
+
+
+$customer = new Customer();
+
+if(!isset($Mold_Controller)) die("Controller not found.");
+
+if (isset($_POST['tele_tech'])){
+
+    if(MobileDetector::getIsCustomer()){
+        if ($customer->IsLogedin()) {
+            $Data = $customer->Data();
+
+            if(isset($_POST['update-email'])){
+                $result = new stdClass();
+                $result->success = false;
+                $email = $_POST['email'];
+
+                if(!Validation::email($email)){
+                    Validation::sanitize($email);
+                    if($email==$Data->email){
+                        $result->success = true;
+                        $result->info = "Email address was not changed.";
+                        $result->email = $email;
+                    }else{
+                        if(!$Customer->CheckEmailExist($email)){
+                            if($Customer->UpdateEmail($Data->id,$email)){
+                                $result->success = true;
+                                $result->info = "Email address updated successfully.";
+                                $result->email = $email;
+                            }else{
+                                $result->info = "Unable to update email address.";
+                            }
+                        }else{
+                            $result->info = "Email address is already in use by another customer.";
+                        }
+                    }
+                }else{
+                    $result->info = "Invalid email address.";
+                }
+                echo json_encode($result);
+            }
+
+            if(isset($_POST['signout'])){
+                $result = new stdClass();
+                $result->success = false;
+
+                if($Customer->Signout()){
+                    $result->success = true;
+                    $result->url = Url::Url();
+                    $result->info = "Signed out Successfully.";
+                }else{
+                    $result->info = "Account already signed out";
+                }
+                echo json_encode($result);
+            }
+
+        }else{
+
+            if(isset($_POST['customer-signin'])){
+                $result = new stdClass();
+                $result->success = false;
+
+                $email = strtolower($_POST['username']);
+                $password =  $_POST['password'];
+
+                if((!Validation::email($email) OR !Validation::phone_number($email)) and !Validation::password($password)){
+                    $email = Validation::sanitize($db->escape($email));
+                    $password =  Validation::sanitize($db->escape($password));
+                    if($Customer->Login(['email'=>$email,'password'=>$password])){
+                        $Data = $Customer->DataEmail($email);
+                        $result->success = true;
+                        $result->url = Url::Url_to("");
+                        $result->info = "Login Successfully";
+                    }else{
+                        $result->info = "Invalid Email or Password";
+                    }
+                }else{
+                    $result->info = "Invalid Email or Password";
+                }
+
+                echo json_encode($result);
+            }
+
+            if(isset($_POST['signout'])){
+                $result = new stdClass();
+                $result->success = true;
+                $result->info = "Account already signed out";
+                $result->url = Url::Url();
+                echo json_encode($result);
+            }
+
+        }
+    }
+}
