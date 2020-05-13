@@ -2,49 +2,35 @@
 
 namespace application;
 use application\Init\PagesController;
+use model\Admin;
 
 class Pages extends PagesController{
 
-    public function test(){
-        if($this->view->Exist("test")) {
-            $this->view->Load("test");
-        }
+
+    /****THIS IS THE ADMIN SECTION ====================****/
+    public function admin(){
+       $Admin = new Admin();
+       if($Admin->isLogedin()){
+           if ($this->view->Exist("admin")){
+               $this->view->Load("admin");
+           }
+       }else{
+           if ($this->view->Exist("admin-login")) {
+               $this->view->Load("admin-login");
+           }
+       }
     }
 
+
+
+
+
+
+    /****THE CUSTOMER SECTION =========================****/
     public function index()
     {
         if($this->view->Exist("public-index")){
             $this->view->Load("public-index");
-        }
-    }
-
-    public function dashboard(){
-        if ($this->view->Exist("admin-dashboard")){
-            $this->view->Load("admin-dashboard");
-        }
-    }
-
-   public function admin_login(){
-       if ($this->view->Exist("admin-login")) {
-           $this->view->Load("admin-login");
-       }
-    }
-
-    public function admin_signup(){
-       if ($this->view->Exist("admin-signup")){
-           $this->view->Load("admin-signup");
-       }
-    }
-
-    public function addCollection(){
-        if ($this->view->Exist("admin-collectionsAdd")){
-            $this->view->Load("admin-collectionsAdd");
-        }
-    }
-
-    public function editCollection(){
-        if ($this->view->Exist("admin-collectionsEdit")){
-            $this->view->Load("admin-collectionsEdit");
         }
     }
 

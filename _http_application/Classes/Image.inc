@@ -27,41 +27,37 @@ class Image implements IClasses {
         $img = explode(".",$imgUrl);
         $extension = end($img);
         $this->extension = $extension;
-        try {
-            switch ($extension) {
-                case "jpg":
-                    $this->img = @imagecreatefromjpeg($imgUrl);
-                    if(!$this->img){
-                        $this->img = @imagecreatefromstring(file_get_contents($imgUrl));
-                    }
-                    break;
-                case "jpeg":
-                    $this->img = imagecreatefromjpeg($imgUrl);
-                    break;
-                case "png":
-                    $this->img = imagecreatefrompng($imgUrl);
-                    break;
-                case "gif":
-                    $this->img = imagecreatefromgif($imgUrl);
-                    break;
-                case "bmp":
-                    $this->img = imagecreatefromwbmp($imgUrl);
-                    break;
-                case "xpm":
-                    $this->img = imagecreatefromxpm($imgUrl);
-                    break;
-                case "gd":
-                    $this->img = imagecreatefromgd($imgUrl);
-                    break;
-                case "gd2":
-                    $this->img = imagecreatefromgd2($imgUrl);
-                    break;
-                default:
-                    throw new Exception("Url is not a valid image",100);
-                    break;
-            }
-        }catch (\Exception $ex){
-            print  $ex->getMessage();
+        switch ($extension) {
+            case "jpg":
+                $this->img = @imagecreatefromjpeg($imgUrl);
+                if(!$this->img){
+                    $this->img = @imagecreatefromstring(file_get_contents($imgUrl));
+                }
+                break;
+            case "jpeg":
+                $this->img = imagecreatefromjpeg($imgUrl);
+                break;
+            case "png":
+                $this->img = imagecreatefrompng($imgUrl);
+                break;
+            case "gif":
+                $this->img = imagecreatefromgif($imgUrl);
+                break;
+            case "bmp":
+                $this->img = imagecreatefromwbmp($imgUrl);
+                break;
+            case "xpm":
+                $this->img = imagecreatefromxpm($imgUrl);
+                break;
+            case "gd":
+                $this->img = imagecreatefromgd($imgUrl);
+                break;
+            case "gd2":
+                $this->img = imagecreatefromgd2($imgUrl);
+                break;
+            default:
+                return null;
+                break;
         }
         return $this;
     }

@@ -1,0 +1,51 @@
+<?php
+
+use application\database\Database;
+use model\Admin;
+
+$db = new Database();
+$admin = new Admin($db);
+
+
+?>
+<script type="text/javascript" src="browser/dash/vendor/jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/jquery-ui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/popper.js/js/popper.min.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="browser/dash/vendor/jquery-slimscroll/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/chart.js/js/Chart.js"></script>
+
+
+<script type="text/javascript" src="browser/dash/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="browser/dash/js/SmoothScroll.js"></script>
+<script type="text/javascript" src="browser/dash/js/pcoded.min.js"></script>
+
+<script type="text/javascript" src="browser/dash/js/vartical-layout.min.js"></script>
+
+
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.animate.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.buttons.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.callbacks.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.confirm.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.desktop.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.history.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.mobile.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/pnotify/js/pnotify.nonblock.js"></script>
+
+<script type="text/javascript" src="browser/dash/vendor/sweetalert/polyfill.min.js"></script>
+<script type="text/javascript" src="browser/dash/vendor/sweetalert/sweetalert2.js"></script>
+
+
+<script type="text/javascript" src="browser/dash/js/script.min.js"></script>
+
+<?php
+if($admin->isLogedin()){
+    ?><script type="text/javascript" src="browser/dash/js/script88-afuefue3u2.js"></script><?php
+}else{
+    ?><script type="text/javascript" src="browser/dash/js/script88-78.js"></script><?php
+}
+?>
+
+

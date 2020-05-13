@@ -1,4 +1,5 @@
 <?php
+namespace model;
 
 use application\database\Database;
 use application\security\Validation;
@@ -13,25 +14,23 @@ class Customer{
     private $user;
     private $encrypt;
     private $control;
-    private $table = "customers";
 
     public $cookie_id =  "Customer_id";
     public $cookie_hash =  "Customer_sh";
     private $cookie_preifix = "user";
 
-    public function __construct()
-    {
-        $this->db = new Database();
-        $this->control = new Application();
-        $this->cooker = $this->control()->Cookies();
-        if($this->is_Logedin()){
-            $this->user = $this->Data();
+    public function __construct($db=null){
+        if(!is_null($db)){
+            $this->db = $db;
+        }else{
+            $this->db = new Database();
         }
+        $this->control = new Application();
+        $this->cookies = $this->control->Cookies();
     }
 
     public function __destruct()
     {
-        // TODO: Implement __destruct() method.
         if (!is_null($this->db)){
             $this->db->close();
         }
@@ -44,7 +43,11 @@ class Customer{
         return (isset($_POST) and isset($_POST['Customer_Request']));
     }
 
-
+    public function Listing(){
+        $database = $this->db;
+        $list = $database(" SELECT id, firstname, lastname, email, password, hash, lastSeen, loginTime, created, updated FROM customers ORDER BY id DESC")->fetchObject();
+        return $list;
+    }
     /**
      * @return bool
      */
@@ -62,7 +65,7 @@ class Customer{
                 if(Validation::LoginId($deid) and Validation::LoginHash($dehash)) {
                     $deid = Validation::sanitize($this->db->escape($deid));
                     $dehash = Validation::sanitize($this->db->escape($dehash));
-                    $user = $database("SELECT hash FROM {$this->table} WHERE id=:id AND hash=:hash", [':id' => $deid, ':hash' => $dehash])->fetchJSON();
+                    $user = $database("SELECT hash FROM customers WHERE id=:id AND hash=:hash", [':id' => $deid, ':hash' => $dehash])->fetchJSON();
                     $d = json_decode($user);
                     if (isset($d[0]->hash)) {
                         if ($d[0]->hash == $dehash) {
@@ -87,7 +90,7 @@ class Customer{
         $database = $this->db;
         if(is_array($data)){
             $data[] = time();
-            $sql = "INSERT INTO {$this->table}(firstname,lastname, email, password) VALUES (?,?,?,?)";
+            $sql = "INSERT INTO customers(firstname,lastname, email, password) VALUES (?,?,?,?)";
             $user = $database($sql,$data);
             if(is_string($user)){
                 echo $user;
@@ -108,7 +111,7 @@ class Customer{
         if (is_array($data)){
             $email = $data['email'];
             $password = $data['password'];
-            $sql = "SELECT id, password FROM {$this->table} WHERE email = :email,[':email'=>$email]]";
+            $sql = "SELECT id, password FROM customers WHERE email = :email,[':email'=>$email]]";
             $this->user =  $database($sql);
             $data = $this->user->fetchJSON();
             if ($data){
@@ -121,7 +124,8 @@ class Customer{
                         $enid = $this->LoginEncode($id);
                         $enlogin = $this->LoginEncode($login);
                         $cookie->SetCookie($this->cookie_id,$enid)->SetCookie($this->cookie_hash,$enlogin);
-                        $update = $database("UPDATE {$this->table} SET hash=:hash, lastSeen=:time, loginTime=:time WHERE id=:id",[':time'=>time(),':hash'=>$login,':id'=>$id]);
+                        $update = $database("UPDATE customers SET hash=:hash, lastSeen=:time, loginTime=:time WHERE id=:id",
+                            [':time'=>time(),':hash'=>$login,':id'=>$id]);
                         if($update->getStatement()->rowCount()) {
                             $result = true;
                         }
@@ -143,7 +147,7 @@ class Customer{
         $cookies = $this->cookies;
         if($this->user!=null){
             $cookies->RemoveCookie($this->cookie_id)->RemoveCookie($this->cookie_hash);
-            $update = $database("UPDATE {$this->table} SET lastSeen=:lastseen WHERE id=:id",[':lastseen'=>time(),':id'=>$this->user->id]);
+            $update = $database("UPDATE customers SET lastSeen=:lastseen WHERE id=:id",[':lastseen'=>time(),':id'=>$this->user->id]);
             if($update->getStatement()->rowCount()){
                 $result = true;
             }
@@ -152,5 +156,13 @@ class Customer{
             $result = true;
         }
         return $result;
+    }
+
+    function LoginEncode($data):string {
+        return $this->encrypt->AesEncrypt(base64_encode($data));
+    }
+
+    function LoginDecode($data):string {
+        return base64_decode($this->encrypt->AesDecrypt($data));
     }
 }

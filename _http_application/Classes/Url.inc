@@ -37,6 +37,11 @@ abstract class Url implements IClasses {
         return self::url().((empty($name)?"":"/$name"));
     }
 
+    public static function Url_upload($name){
+        $name = str_replace("\\","/",$name);
+        return self::Url_to(self::Upload_dir()."$name");
+    }
+
     public static function Redirect_to($name){
         $url = self::url_to($name);
         header("location: $url");

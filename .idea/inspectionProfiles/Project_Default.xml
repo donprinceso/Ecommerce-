@@ -1,0 +1,47 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="33">
+            <item index="0" class="java.lang.String" itemvalue="customer_reset_password" />
+            <item index="1" class="java.lang.String" itemvalue="customer_login" />
+            <item index="2" class="java.lang.String" itemvalue="customer_register" />
+            <item index="3" class="java.lang.String" itemvalue="app-page" />
+            <item index="4" class="java.lang.String" itemvalue="admin-login" />
+            <item index="5" class="java.lang.String" itemvalue="app-navigation" />
+            <item index="6" class="java.lang.String" itemvalue="app-link" />
+            <item index="7" class="java.lang.String" itemvalue="app-page-content" />
+            <item index="8" class="java.lang.String" itemvalue="app-brand-file" />
+            <item index="9" class="java.lang.String" itemvalue="app-brand" />
+            <item index="10" class="java.lang.String" itemvalue="app-brand-preview" />
+            <item index="11" class="java.lang.String" itemvalue="app-brand-loader" />
+            <item index="12" class="java.lang.String" itemvalue="app-brand-link" />
+            <item index="13" class="java.lang.String" itemvalue="placeholder" />
+            <item index="14" class="java.lang.String" itemvalue="app-brand-add" />
+            <item index="15" class="java.lang.String" itemvalue="app-edit" />
+            <item index="16" class="java.lang.String" itemvalue="app-delete" />
+            <item index="17" class="java.lang.String" itemvalue="app-brand-item" />
+            <item index="18" class="java.lang.String" itemvalue="app-model" />
+            <item index="19" class="java.lang.String" itemvalue="app-model-add" />
+            <item index="20" class="java.lang.String" itemvalue="app-brand-id" />
+            <item index="21" class="java.lang.String" itemvalue="app-customer-item" />
+            <item index="22" class="java.lang.String" itemvalue="app-password" />
+            <item index="23" class="java.lang.String" itemvalue="app-password-reset" />
+            <item index="24" class="java.lang.String" itemvalue="app-edit-box" />
+            <item index="25" class="java.lang.String" itemvalue="app-brand-update" />
+            <item index="26" class="java.lang.String" itemvalue="app-update-filename" />
+            <item index="27" class="java.lang.String" itemvalue="app-update-name" />
+            <item index="28" class="java.lang.String" itemvalue="app-update-update" />
+            <item index="29" class="java.lang.String" itemvalue="app-delete-box" />
+            <item index="30" class="java.lang.String" itemvalue="app-model-id" />
+            <item index="31" class="java.lang.String" itemvalue="app-model-update" />
+            <item index="32" class="java.lang.String" itemvalue="app-model-brand" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+  </profile>
+</component>

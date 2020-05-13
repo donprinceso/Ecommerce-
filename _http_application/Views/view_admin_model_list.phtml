@@ -1,0 +1,143 @@
+<?php
+
+use application\database\Database;
+use model\Brand;
+use model\Model;
+
+$db = new Database();
+$Model = new Model($db);
+$List = $Model->Listing();
+$Brand = new Brand($db);
+$brandList = $Brand->Listing();
+?>
+<div class="pcoded-inner-content" app-model>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row align-items-end mb-3">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Model Listing</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="#"> <i class="feather icon-home"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Model</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Manage Model</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Models List</h5>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Model Name</th>
+                                            <th>Brand Name</th>
+                                            <th>Created</th>
+                                            <th>Modified</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                            foreach ($List as $item){
+                                                $id = $item->id;
+                                                $name = $item->name;
+                                                $brand = $item->brand;
+                                                $created = date("Y-m-d (h:iA)",floatval($item->created));
+                                                $updated = (is_null($item->updated))?
+                                                    "Not Updated Yet":
+                                                    date("Y-m-d (h:iA)",floatval($item->updated));
+                                                ?>
+                                                <tr app-model-id="<?=$id?>">
+                                                    <th scope="row"><?=$id?></th>
+                                                    <td><?=$name?></td>
+                                                    <td><?=$brand?></td>
+                                                    <td><?=$created?></td>
+                                                    <td><?=$updated?></td>
+                                                    <td>
+                                                        <a href="#" app-edit class="btn btn-sm btn-info" data-toggle="modal" data-target="#edit-model">
+                                                            <span class="fa fa-edit"></span>
+                                                        </a>
+                                                        <a href="#" app-delete class="btn btn-sm btn-danger">
+                                                            <span class="fa fa-remove"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        ?>
+                                        </tbody>
+                                    </table>
+
+                                    <!-------MODAL BEGIN HERE--->
+                                    <div app-edit-box class="modal fade" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="login-card card-block modal-body">
+                                                <div class="md-float-material">
+                                                    <div class="card m-t-15">
+                                                        <div class="auth-box card-block">
+                                                            <div class="row m-b-20">
+                                                                <div class="col-md-12">
+                                                                    <h4 class="text-left txt-primary">Edit Model</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <form method="post" app-model-update>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Select Brand</label>
+                                                                        <select name="brand" class="form-control form-control-info" app-model-brand>
+                                                                            <option value="">Select Brand name</option>
+                                                                            <?php
+                                                                            foreach ($brandList as $item){
+                                                                                $id = $item->id;
+                                                                                $name = $item->name;
+                                                                                echo "<option value='$id'>$name</option>";
+                                                                            }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" name="name"  placeholder="Model Name"/>
+                                                                        <input type="hidden" app-model-id name="id">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button class="btn btn-primary" type="submit">Update Model</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-------MODAL ENDS HERE--->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

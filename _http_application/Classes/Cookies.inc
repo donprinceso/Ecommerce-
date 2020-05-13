@@ -15,11 +15,7 @@ class Cookies implements IClasses {
      */
     public function SetCookie(string $name, $value='',int $expire=0):Cookies{
         $expire = ($expire>0)?(time()+(60*$expire)):$expire;
-        if(version_compare(PHP_VERSION, '7.3')>0){
-            setcookie($name,$value,$expire,APP_COOKIE_PATH,APP_COOKIE_DOMAIN,APP_COOKIE_SECURE,APP_COOKIE_HTTP,APP_COOKIE_SAMESITE);
-        }else{
             setcookie($name,$value,$expire,APP_COOKIE_PATH,APP_COOKIE_DOMAIN,APP_COOKIE_SECURE,APP_COOKIE_HTTP);
-        }
         return $this;
     }
 
@@ -43,15 +39,9 @@ class Cookies implements IClasses {
     }
 
     public function RemoveCookie($name){
-        if(version_compare(PHP_VERSION, '7.3')>0) {
-            setcookie($name, '', time() - 3600, APP_COOKIE_PATH, APP_COOKIE_DOMAIN, APP_COOKIE_SECURE, APP_COOKIE_HTTP, APP_COOKIE_SAMESITE);
-            setcookie($name,false);
-            unset($_COOKIE[$name]);
-        }else{
-            setcookie($name, '', time() - 3600, APP_COOKIE_PATH, APP_COOKIE_DOMAIN, APP_COOKIE_SECURE, APP_COOKIE_HTTP);
-            setcookie($name,false);
-            unset($_COOKIE[$name]);
-        }
+        setcookie($name, '', time() - 3600, APP_COOKIE_PATH, APP_COOKIE_DOMAIN, APP_COOKIE_SECURE, APP_COOKIE_HTTP);
+        setcookie($name,false);
+        unset($_COOKIE[$name]);
         return $this;
     }
 

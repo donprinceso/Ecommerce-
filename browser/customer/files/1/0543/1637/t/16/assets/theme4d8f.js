@@ -1412,7 +1412,7 @@ timber.cacheSelectors = function () {
     $thumbImages: $('#productThumbs').find('a.product-photo-thumb'),
     $shareButtons: $('.social-sharing'),
 
-    // Collection Pages
+    // Brand Pages
     $collectionFilters: $('#collectionFilters'),
     $advancedFilters: $('.advanced-filters'),
     $toggleFilterBtn: $('#toggleFilters'),

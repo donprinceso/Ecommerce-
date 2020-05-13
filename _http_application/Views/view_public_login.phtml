@@ -16,7 +16,7 @@ if (!isset($View_Controller)) die("View Controller not found");
 <base href="<?php Url::url() ?><!--" />
 <?php $View_Controller->Load()->widget()->Load("public-head") ?>
 
-<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+<body id="supply-theme-demo-shop-by-shopify" class="template-index" app-page="signin">
 
 <?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
 
@@ -30,20 +30,19 @@ if (!isset($View_Controller)) die("View Controller not found");
                 We've sent you an email with a link to update your password.
             </div>
 
-            <form method="post" action="" id="customer_login" accept-charset="UTF-8">
-                <input type="hidden" name="form_type" value="customer_login" />
-                <input type="hidden" name="utf8" value="✓" />
+            <form  id="customer_login" accept-charset="UTF-8" customer_login>
+
 
                 <h1>Login</h1>
 
 
                 <label for="customer_email" class="hidden-label">Email</label>
-                <input type="email" value="" name="customer[email]" id="customer_email" placeholder="Email"  autocorrect="off" autocapitalize="off" autofocus>
+                <input type="email" value="" name="email" id="customer_email" placeholder="Email"  autocorrect="off" autocapitalize="off" autofocus>
 
 
 
                 <label for="customer_password" class="hidden-label">Password</label>
-                <input type="password" value="" name="customer[password]" id="customer_password" placeholder="Password" >
+                <input type="password" value="" name="password" id="customer_password" placeholder="Password" >
 
                 <p>
                     <a href="#" onclick="showRecoverPasswordForm();return false;">Forgot your password?</a>
@@ -52,7 +51,7 @@ if (!isset($View_Controller)) die("View Controller not found");
 
 
                 <p>
-                    <input type="submit" class="btn" id="Customerlogin_btn" value="Sign In">
+                    <button type="submit" class="btn" id="Customer_login_btn" value="">Sign In</button>
                 </p>
                 or <a href="index">Return to Store</a>
 
@@ -65,7 +64,7 @@ if (!isset($View_Controller)) die("View Controller not found");
                 <h2>Reset your password</h2>
                 <p>We will send you an email to reset your password.</p>
 
-                <form method="post" action="" accept-charset="UTF-8">
+                <form accept-charset="UTF-8" action="" customer_reset_password method="post">
                     <input type="hidden" name="form_type" value="recover_customer_password" />
                     <input type="hidden" name="utf8" value="✓" />
 
@@ -86,13 +85,6 @@ if (!isset($View_Controller)) die("View Controller not found");
         </div>
 
     </div>
-
-    <script>
-        $(document)ready(){
-
-        }
-
-    </script>
 
     <script>
         /*

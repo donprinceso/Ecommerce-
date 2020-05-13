@@ -66,7 +66,9 @@
 
                     </div>
                     <div class="form-vertical">
-                        <form method="post" action="https://supply-electronics.myshopify.com/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form"><input type="hidden" name="form_type" value="customer" /><input type="hidden" name="utf8" value="✓" />
+                        <form method="post" action="" id="contact_form" accept-charset="UTF-8" class="contact-form">
+                            <input type="hidden" name="form_type" value="customer" />
+                            <input type="hidden" name="utf8" value="✓" />
 
 
                             <input type="hidden" name="contact[tags]" value="newsletter">
@@ -101,7 +103,7 @@
                             &copy; 2020 <a href="#" title="">E-commerce Shopping</a>
                         </li>
                         <li>
-                            E-commerce by <a target="_blank" rel="nofollow" href="https://www.shopify.ca/?utm_campaign=poweredby&amp;utm_medium=shopify&amp;utm_source=onlinestore">PTech</a>
+                            E-commerce by <a target="_blank" rel="nofollow" href="">PTech</a>
                         </li>
                     </ul>
                 </div>
@@ -179,34 +181,6 @@
 
 </div>
 
-<script>
-    var moneyFormat = '${{amount}}';
-
-    var theme = {
-        strings: {
-            product: {
-                unavailable: "Unavailable",
-                will_be_in_stock_after: "Will be in stock after [date]",
-                only_left: "Only 1 left!"
-            },
-            navigation: {
-                more_link: "More"
-            },
-            map: {
-                addressError: "Error looking up that address",
-                addressNoResults: "No results for that address",
-                addressQueryLimit: "You have exceeded the Google API usage limit. Consider upgrading to a \u003ca href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\"\u003ePremium Plan\u003c\/a\u003e.",
-                authError: "There was a problem authenticating your Google Maps API Key."
-            }
-        },
-        settings: {
-            cartType: "modal"
-        }
-    }
-</script>
-
-
-
 
 <script id="cartTemplate" type="text/template">
 
@@ -274,13 +248,11 @@
 
 </script>
 <script id="ajaxifyQty" type="text/template">
-
     <div class="ajaxifyCart--qty">
         <input type="text" class="ajaxifyCart--num" value="{{itemQty}}" data-id="{{key}}" min="0" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
         <span class="ajaxifyCart--qty-adjuster ajaxifyCart--add" data-id="{{key}}" data-line="{{line}}" data-qty="{{itemAdd}}">+</span>
         <span class="ajaxifyCart--qty-adjuster ajaxifyCart--minus" data-id="{{key}}" data-line="{{line}}" data-qty="{{itemMinus}}">-</span>
     </div>
-
 </script>
 <script id="jsQty" type="text/template">
 
@@ -291,3 +263,7 @@
     </div>
 
 </script>
+
+<script src="browser/javascript/javascript.js" type="text/javascript"></script>
+</body>
+</html>

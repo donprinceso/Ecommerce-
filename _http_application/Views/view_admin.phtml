@@ -1,0 +1,76 @@
+<?php
+
+use application\locations\Url;
+
+if (!isset($View_Controller)) die("View Controller not found");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <?php $View_Controller->Load()->Widget()->Load("admin-head"); ?>
+
+    <body app-page="dasboard">
+
+        <div class="theme-loader">
+            <div class="ball-scale">
+                <div class='contain'>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                    <div class="ring">
+                        <div class="frame"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pcoded" class="pcoded">
+            <div class="pcoded-overlay-box"></div>
+            <div class="pcoded-container navbar-wrapper">
+
+                <?php $View_Controller->Load()->Widget()->Load("admin-header") ?>
+
+                <div class="pcoded-main-container">
+                    <div class="pcoded-wrapper">
+
+                        <?php $View_Controller->Load()->Widget()->Load("admin-sidebar") ?>
+
+                        <div class="pcoded-content" app-page-content>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <?php $View_Controller->Load()->Widget()->Load("admin-footer"); ?>
+
+    </body>
+
+</html>

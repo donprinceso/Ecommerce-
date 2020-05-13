@@ -8,6 +8,7 @@ use application\browser\Cookies;
 use application\browser\Session;
 use application\Pages;
 use application\security\EncryptionClass;
+use application\security\Hashing;
 use application\security\ServerDetails;
 
 
@@ -23,7 +24,7 @@ abstract class ApplicationController implements IClasses, IController {
         return new Pages();
     }
 
-    public function Image($img):Image{
+    public function Image($img=null):Image{
         return new Image($img);
     }
 
@@ -37,6 +38,10 @@ abstract class ApplicationController implements IClasses, IController {
 
     public function Encryption():EncryptionClass{
         return new EncryptionClass();
+    }
+
+    public function Hashing():Hashing{
+        return new Hashing();
     }
 
     public function Cookies():Cookies{

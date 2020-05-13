@@ -16,7 +16,7 @@ if (!isset($View_Controller)) die("View Controller not found");
 <base href="<?php Url::url() ?><!--" />
 <?php $View_Controller->Load()->widget()->Load("public-head") ?>
 
-<body id="supply-theme-demo-shop-by-shopify" class="template-index">
+<body id="supply-theme-demo-shop-by-shopify" class="template-index" app-page="signup">
 
 <?php $View_Controller->Load()->widget()->Load("public-navbar") ?>
 
@@ -29,21 +29,20 @@ if (!isset($View_Controller)) die("View Controller not found");
 
             <h1>Create Account</h1>
 
-            <form method="post" action="" id="create_customer" accept-charset="UTF-8">
-                <input type="hidden" name="form_type" value="create_customer" />
-                <input type="hidden" name="utf8" value="✓" />
+            <form method="post" id="customer_register" accept-charset="UTF-8" customer_register>
+
 
                 <label for="first_name" class="hidden-label">First Name</label>
-                <input type="text" value="" name="customer[first_name]" id="first_name" placeholder="First Name"  autofocus>
+                <input type="text" value="" name="firstname" id="firstname" placeholder="First Name"  autofocus>
 
                 <label for="last_name" class="hidden-label">Last Name</label>
-                <input type="text" value="" name="customer[last_name]" id="last_name" placeholder="Last Name" >
+                <input type="text" value="" name="lastname" id="lastname" placeholder="Last Name" >
 
                 <label for="email" class="hidden-label">Email</label>
-                <input type="email" value="" name="customer[email]" id="email" placeholder="Email"  autocorrect="off" autocapitalize="off">
+                <input type="email" value="" name="email" id="email" placeholder="Email"  autocorrect="off" autocapitalize="off">
 
                 <label for="password" class="hidden-label">Password</label>
-                <input type="password" value="" name="customer[password]" id="create_password" placeholder="Password" >
+                <input type="password" value="" name="password" id="create_password" placeholder="Password" >
                 <p>
                     <input type="submit" value="Create" class="btn">
                 </p>

@@ -2,10 +2,13 @@
 use application\Application;
 use application\database\Database;
 use application\init\Image;
-use application\init\Mail;
-use application\model\MobileDetector;
 use application\locations\Url;
 use application\security\Validation;
+use model\Admin;
+use model\Brand;
+use model\Customer;
+use model\General;
+use model\Model;
 
 if(!defined("King_Framework")) die("you cannot access config file directly");
 
@@ -13,97 +16,465 @@ $App = new Application();
 $db = new Database();
 $controller = new Application();
 $Image = new Image();
+$Loader = $App->Load();
 
-
-$customer = new Customer();
+$general = new General($db);
+$admin = new Admin($db);
+$customer = new Customer($db);
+$brand = new Brand($db);
+$model = new Model($db);
 
 if(!isset($Mold_Controller)) die("Controller not found.");
 
-if (isset($_POST['tele_tech'])){
+if (isset($_POST['tele_tech'])) {
 
-    if(MobileDetector::getIsCustomer()){
-        if ($customer->IsLogedin()) {
-            $Data = $customer->Data();
+    // The Admin Side ========================
+    if($admin->isLogedin()){
+        $Data = $admin->Data();
 
-            if(isset($_POST['update-email'])){
-                $result = new stdClass();
-                $result->success = false;
-                $email = $_POST['email'];
+        if(isset($_POST['updata-password'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+            $oldpassword = trim($_POST['oldpassword']);
+            $newpassword = trim($_POST['newpassword']);
+            $repeatpassword = trim($_POST['repeatpassword']);
 
-                if(!Validation::email($email)){
-                    Validation::sanitize($email);
-                    if($email==$Data->email){
-                        $result->success = true;
-                        $result->info = "Email address was not changed.";
-                        $result->email = $email;
-                    }else{
-                        if(!$customer->CheckEmailExist($email)){
-                            if($customer->UpdateEmail($Data->id,$email)){
-                                $result->success = true;
-                                $result->info = "Email address updated successfully.";
-                                $result->email = $email;
-                            }else{
-                                $result->info = "Unable to update email address.";
-                            }
-                        }else{
-                            $result->info = "Email address is already in use by another customer.";
+
+            if(!Validation::password($oldpassword)){
+                $result->name = false;
+                $result->validated = false;
+            }
+            if(!Validation::password($newpassword)){
+                $result->name = false;
+                $result->validated = false;
+            }
+            if(!Validation::password($repeatpassword)){
+                $result->name = false;
+                $result->validated = false;
+            }
+
+            if($result->validated){
+                $oldpassword = Validation::sanitize($oldpassword);
+                if(!$admin->PasswordExist($oldpassword)) {
+                    if($newpassword != $repeatpassword){
+                        if ($admin->ResetPassword(["password" => $oldpassword, "newpassword" => $newpassword])) {
+                            $result->success = true;
+                            $result->url = Url::Url();
+                            $result->info = "Password Updated Successfully.";
+                        } else {
+                            $result->info = "Password do not march";
                         }
                     }
                 }else{
-                    $result->info = "Invalid email address.";
+                    $result->info = "Unable to Update Password";
                 }
-                echo json_encode($result);
             }
 
-            if(isset($_POST['signout'])){
-                $result = new stdClass();
-                $result->success = false;
+            echo json_encode($result);
+        }
 
-                if($customer->Signout()){
+        /***PAGES ===============================***/
+        if(isset($_POST["admin-pages"])){
+            $page = $_POST['page'];
+            if($Loader->View()->Exist($page)){
+                $Loader->View()->Load($page);
+            }else{
+                echo "page-not-exist-##";
+            }
+        }
+
+
+        /***BRANDS ===============================***/
+        if(isset($_POST['brand-image'])){
+            $result = new stdClass();
+            $image = $_FILES['file'];
+            $time = time();
+            $img = $brand->Upload($image,$time);
+            if($img){
+                $server_url = Url::get_server_upload_url().$img;
+                $server_url_save = Url::ChangeExtension($server_url,"jpg");
+                $public_url = Url::ChangeExtension($img,"jpg");
+
+                $result->ddd = $server_url_save;
+
+                $imgc = $controller->Image();
+                $imgcomp = $imgc->setImage($server_url);
+                if(!is_null($imgcomp)) {
+                    $imgcomp->Recreate($general->imageBrandSize);
+                    $imgcomp->PortraitOrientation();
+                    $render = $imgcomp->Render();
+                    $render->setQuality($general->imageBrandQuality)
+                        ->saveJPEG($server_url_save);
+                    //checking if the extension is a png then remove it
+                    if(!Url::CheckExtension($server_url,"jpg")){
+                        Url::fileRemove($server_url);
+                    }
+                    $result->url = Url::Url_upload($public_url);
+                    $result->uploadURL = $public_url;
                     $result->success = true;
-                    $result->url = Url::Url();
-                    $result->info = "Signed out Successfully.";
                 }else{
-                    $result->info = "Account already signed out";
+                    Url::fileRemove($server_url);
+                    $result->info = "Unable to process image file.";
                 }
-                echo json_encode($result);
+            }else{
+                $result->info = "Picture File is not valid.";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['brand_add'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+            $name = trim($_POST['name']);
+            $filename = trim($_POST['url']);
+
+            if(!Validation::text($name,3,100)){
+                $result->name = false;
+                $result->name_t = "Brand name requires at least 3 characters.";
+                $result->validated = false;
+            }
+            if(!Validation::text($filename,20,40)){
+                $result->filename = false;
+                $result->filename_t = "There was no file uploaded.";
+                $result->validated = false;
             }
 
-        }else{
-
-            if(isset($_POST['customer_login'])){
-                $result = new stdClass();
-                $result->success = false;
-
-                $email = strtolower($_POST['email']);
-                $password =  $_POST['password'];
-
-                if((!Validation::email($email)) and !Validation::password($password)){
-                    $email = Validation::sanitize($db->escape($email));
-                    $password =  Validation::sanitize($db->escape($password));
-                    if($customer->Login(['email'=>$email,'password'=>$password])){
-                        $Data = $customer->DataEmail($email);
+            if($result->validated){
+                $name = Validation::sanitize($name);
+                if(!$brand->NameExist($name)) {
+                    if ($brand->Add(["name" => $name, "image" => $filename])) {
                         $result->success = true;
-                        $result->url = Url::Url_to("login");
-                        $result->info = "Login Successfully";
-                    }else{
-                        $result->info = "Invalid Email or Password";
+                        $result->url = Url::Url();
+                        $result->info = "Brand Created Successfully.";
+                    } else {
+                        $result->info = "Unable to create brand";
                     }
                 }else{
-                    $result->info = "Invalid Email or Password";
+                    $result->info = "The entered brand name has already been created, please try another name.";
+                }
+            }
+
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['view-brand'])){
+            $result = new stdClass();
+            $result->found = false;
+            $id = $_POST['id'];
+            if($brand->CheckIDExist($id)){
+                $data = $brand->Get($id);
+                $data->url = $data->image;
+                $data->image = Url::Url_upload($data->image);
+                $result->data = $data;
+                $result->found = true;
+            }else{
+                $result->info = "Brand was not found";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['Brand-update'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $filename = trim($_POST['url']);
+
+                if ($brand->CheckIDExist($id)) {
+
+                    if (!Validation::text($name,3,100)) {
+                        $result->name = false;
+                        $result->name_t = "There was no name given";
+                        $result->validated = false;
+                    }
+                    if(!Validation::text($filename,20,40)){
+                        $result->filename = false;
+                        $result->filename_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+
+                    if($result->validated) {
+                        $name = Validation::sanitize($name);
+                        if ($brand->UpdateBrand($id,["name" => $name, "image" => $filename])) {
+                            $result->success = true;
+                            $data = $brand->Get($id);
+                            $result->dataID = $data->id;
+                            $result->dataImage = Url::Url_upload($data->image);
+                            $result->dataName = $data->name;
+                            $result->dataUpdate = date("Y-m-d (h:iA)",floatval($data->updated));
+                            $result->info = "Brand Updated Successfully";
+
+                        } else {
+                            $result->info = "Unable to Update brand";
+                        }
+                    }else{
+                        $result->info = "Unable to Update brand";
+                    }
+                }else{
+                    $result->info = "Brand Id don't exit";
+                }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['delete-Brand'])){
+            $result = new stdClass();
+            $result->success = false;
+            $id = $_POST['id'];
+            if($brand->CheckIdExist($id)){
+                if($model->GetTotal($id)==0){
+                    $result->success = !!$brand->Remove($id);
+                }else{
+                    $result->info = "Can not delete brand. <br> You need to delete all the model related to the brand.";
+                }
+            }else{
+                $result->info = "Unable to remove Brand";
+            }
+            echo json_encode($result);
+        }
+
+
+
+
+        /***MODELS ===============================***/
+        if(isset($_POST['model_add'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+            $brandId = trim($_POST['brand']);
+            $name = trim($_POST['name']);
+
+            if(!Validation::number($brandId,1)){
+                $result->brand = false;
+                $result->brand_t = "Selected brand does not exist.";
+                $result->validated = false;
+            }
+            if(!Validation::text($name,3,100)){
+                $result->name = false;
+                $result->name_t = "Model requires at least 3 characters.";
+                $result->validated = false;
+            }
+
+            if($result->validated){
+                $brandId = Validation::sanitize($brandId);
+                $name = Validation::sanitize($name);
+                if(!$model->NameExist($brandId,$name)) {
+                    if ($model->Add(["brand" => $brandId, "name" => $name])) {
+                        $result->success = true;
+                        $result->url = Url::Url();
+                        $result->info = "Model Created Successfully.";
+                    } else {
+                        $result->info = "Unable to create Model";
+                    }
+                }else{
+                    $result->info = "The entered Model name has already been used by the selected Brand name, please try another name.";
+                }
+            }
+
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['view-model'])){
+            $result = new stdClass();
+            $result->found = false;
+            $id = $_POST['id'];
+            if($model->CheckIDExist($id)){
+                $data = $model->Get($id);
+                $id = $data->id;
+                $name = $data->name;
+                $brandName = $data->brand;
+                $upated = $data->updated;
+                $result->data = $data;
+                $result->found = true;
+            }else{
+                $result->info = "Model was not found";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['model-update'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $brandId = trim($_POST['brand']);
+
+            if ($model->CheckIDExist($id)) {
+
+                if (!Validation::text($name,3,100)) {
+                    $result->name = false;
+                    $result->name_t = "There was no name given";
+                    $result->validated = false;
+                }
+                if(!Validation::number($brandId,1)){
+                    $result->brand = false;
+                    $result->brand_t = "Selected brand does not exist.";
+                    $result->validated = false;
                 }
 
-                echo json_encode($result);
-            }
+                if($result->validated) {
+                    $brandId = Validation::sanitize($brandId);
+                    $name = Validation::sanitize($name);
+                    if ($model->UpdateModel($id,["name" => $name, "brand" => $brandId])) {
+                        $result->success = true;
+                        $data = $model->Get($id);
+                        $result->dataID = $data->id;
+                        $result->dataName = $data->name;
+                        $result->brandID = $data->brand;
+                        $result->dataUpdate = date("Y-m-d (h:iA)",floatval($data->updated));
+                        $result->info = "Model Updated Successfully";
 
-            if(isset($_POST['signout'])){
-                $result = new stdClass();
-                $result->success = true;
-                $result->info = "Account already signed out";
-                $result->url = Url::Url();
-                echo json_encode($result);
+                    } else {
+                        $result->info = "Unable to Update model";
+                    }
+                }else{
+                    $result->info = "Unable to Update model";
+                }
+            }else{
+                $result->info = "Model Id don't exit";
             }
-
+            echo json_encode($result);
         }
+
+        /***ADMIN PUBLIC ===============================***/
+        if (isset($_POST['signout'])) {
+            $result = new stdClass();
+            $result->success = true;
+            $result->info = "Account already signed out";
+            $result->url = Url::Url();
+            echo json_encode($result);
+        }
+
     }
+
+
+
+
+    // The Customer side =========================
+    if ($customer->IsLogedin()) {
+        $Data = $customer->Data();
+
+        if (isset($_POST['signout'])) {
+            $result = new stdClass();
+            $result->success = true;
+            $result->info = "Account already signed out";
+            $result->url = Url::Url();
+            echo json_encode($result);
+        }
+
+    }
+
+
+
+
+    if (!$customer->IsLogedin() or !$admin->isLogedin()) {
+
+        // admin login function ============================
+        if (isset($_POST['admin---login'])) {
+            $result = new stdClass();
+            $result->validated = true;
+            $result->success = false;
+
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+            if (!Validation::email($email) and !Validation::password($password)) {
+                $email = Validation::sanitize($db->escape($email));
+                $password = Validation::sanitize($db->escape($password));
+
+                if ($admin->login(['email'=>$email, 'password'=>$password])) {
+                    $result->success = true;
+                    $result->url = Url::Url();
+                    $result->info = "Successfully login";
+                } else {
+                    $result->info = "Unable to Login!!!";
+                }
+            } else {
+                $result->info = "Invalid Email And Password Try Again ";
+            }
+            echo json_encode($result);
+        }
+
+        // customer login ===================
+        if (isset($_POST['customer-login'])) {
+            $result = new stdClass();
+            $result->success = false;
+            $result->validation = true;
+
+            $email = strtolower($_POST['email']);
+            $password = $_POST['password'];
+
+            if ((!Validation::email($email)) and !Validation::password($password)) {
+                $email = Validation::sanitize($db->escape($email));
+                $password = Validation::sanitize($db->escape($password));
+                if ($customer->Login(['email' => $email, 'password' => $password])) {
+                    $result->success = true;
+                    $result->url = Url::Url_to("index");
+                    $result->info = "Login Successfully";
+                } else {
+                    $result->info = "Invalid Email or Password";
+                }
+            } else {
+                $result->info = "Invalid Email or Password";
+            }
+
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['customer_register'])){
+            $result = new stdClass();
+            $result->validated = true;
+            $result->success = true;
+
+            $firstname = trim($_POST['firstname']);
+            $lastname = trim($_POST['lastname']);
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+
+            if (Validation::text($firstname)) {
+                $result->name = false;
+                $result->validated = false;
+            }
+
+            if (Validation::text($lastname)) {
+                $result->name = false;
+                $result->validated = false;
+            }
+
+            if(Validation::email($email)){
+                $result->email = false;
+                $result->validated = false;
+            }
+
+            if(Validation::password($password)){
+                $result->phone = false;
+                $result->validated = false;
+            }
+
+            if ($result->validated){
+                $firstname = Validation::sanitize($firstname);
+                $lastname = Validation::sanitize($lastname);
+                $email = Validation::sanitize($email);
+                $password = Validation::sanitize($password);
+
+                $user = $customer->register([$firstname,$lastname,$email,$password]);
+                if ($user){
+                    $result->success = true;
+                    $result->url = Url::Url_to("login");
+                    $result->info = "Registration was successfully ";
+                }else{
+                    $result->info = "Unable to register";
+                }
+            }
+            echo json_encode($result);
+        }
+
+    }
+
 }

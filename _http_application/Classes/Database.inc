@@ -118,7 +118,6 @@ class ResultFetch{
                 $result[] = $obj;
             }
         }
-        Validation::sanitizeObject($result);
         return json_encode($result);
     }
 
@@ -161,7 +160,6 @@ class ResultFetch{
                 $obj = $objs[$id];
             }
         }
-        Validation::sanitizeObject($obj);
         return json_decode(json_encode($obj));
     }
 

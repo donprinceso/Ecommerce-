@@ -1,0 +1,106 @@
+<?php
+
+use application\database\Database;
+use application\locations\Url;
+use model\Customer;
+
+$db = new Database();
+$Customer = new Customer($db);
+$List = $Customer->Listing();
+?>
+<div class="pcoded-inner-content brand-list">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row align-items-end mb-3">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Customer List</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="#"> <i class="feather icon-home"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Customer</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Manage Customer</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Customer List</h5>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Last Seen</th>
+                                            <th>Login Time</th>
+                                            <th>Created</th>
+                                            <th>Modified</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        foreach ($List as $item){
+                                            $id = $item->id;
+                                            $firstname = $item->name;
+                                            $lastname = $item->lastname;
+                                            $email = $item->email;
+                                            $lastseen = $item->lastSeen;
+                                            $logintime = $item->loginTime;
+                                            $created = date("Y-m-d (h:iA)",floatval($item->created));
+                                            $updated = (is_null($item->updated))?
+                                                "Not Updated Yet":
+                                                date("Y-m-d (h:iA)",floatval($item->updated));
+                                            ?>
+                                            <tr app-customer-item="<?=$id?>">
+                                                <th><?=$id?></th>
+                                                <td><?=$firstname?></td>
+                                                <td><?=$lastname?></td>
+                                                <td><?=$email?></td>
+                                                <td><?=$lastseen?></td>
+                                                <td><?=$logintime?></td>
+                                                <td><?=$created?></td>
+                                                <td><?=$updated?></td>
+                                                <td class="right">
+                                                    <button app-edit class="btn btn-sm btn-info">
+                                                        <span class="fa fa-edit"></span>
+                                                    </button>
+                                                    <button app-delete class="btn btn-sm btn-danger">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
