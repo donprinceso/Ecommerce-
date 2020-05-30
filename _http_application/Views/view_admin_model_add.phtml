@@ -7,7 +7,7 @@ $db = new Database();
 $Brand = new Brand($db);
 $List = $Brand->Listing();
 ?>
-<div class="pcoded-inner-content" app-model>
+<div class="pcoded-inner-content model-add" app-model>
     <div class="main-body">
         <div class="page-wrapper">
             <div class="row align-items-end mb-3">
@@ -36,26 +36,123 @@ $List = $Brand->Listing();
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
-                            <div class="col-sm-12 col-xl-5 m-b-10 m-t-10 offset-4">
+                            <div class="col-sm-12  m-b-10 m-t-10 ">
                                 <form method="post" app-model-add>
-                                    <div class="form-group">
-                                        <label class="form-label">Select Brand</label>
-                                        <select name="brand" class="form-control form-control-info">
-                                            <option value="">Select Brand name</option>
-                                            <?php
-                                            foreach ($List as $item){
-                                                $id = $item->id;
-                                                $name = $item->name;
-                                                echo "<option value='$id'>$name</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" name="name" placeholder="Model Name"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-primary" type="submit">Create</button>
+                                    <div class="row container">
+                                        <div class="col-sm-12 col-lg-5">
+
+                                            <div class="col-sm-12 col-lg-10 offset-1 model-image">
+                                                <div class="model-image-top">
+                                                    <img src="browser/images/models/model.jpg" class="model-logo" model-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-file>
+                                                    <input type="hidden" model-link name="url">
+                                                    <div class="img-loader" model-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-lg-4 model-image text-center">
+                                                    <img src="browser/images/models/model-front.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="front-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-4 model-image text-center">
+                                                    <img src="browser/images/models/model-back.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="back-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-4 model-image text-center">
+                                                    <img src="browser/images/models/model-top.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="top-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-4 mt-1 model-image text-center">
+                                                    <img src="browser/images/models/model-bottom.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="down-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-4 mt-1 model-image text-center">
+                                                    <img src="browser/images/models/model-left.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="left-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-4 mt-1 model-image text-center">
+                                                    <img src="browser/images/models/model-right.jpg" class="model-logo" model-side-preview>
+                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file>
+                                                    <input type="hidden" model-side-url name="right-url">
+                                                    <div class="img-loader" model-side-loader>
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-lg-7">
+                                            <div class="form-group">
+                                                <label class="form-label">Select Brand</label>
+                                                <select name="brand" class="form-control form-control-info">
+                                                    <option value="">Select Brand name</option>
+                                                    <?php
+                                                    foreach ($List as $item){
+                                                        $id = $item->id;
+                                                        $name = $item->name;
+                                                        echo "<option value='$id'>$name</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control form-control-info" name="name" placeholder="Model Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control form-control-info" type="text" name="price" placeholder="Price">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Product Description</label>
+                                                <textarea class="form-control form-control-info" type="text" name="description" placeholder="Product Description" style="min-height: 171px"></textarea>
+                                            </div>
+
+                                            <h5>Features</h5>
+                                            <div app-features>
+                                                <div class="row m-t-5" app-feature>
+                                                    <div class="col-sm-12 col-lg-4">
+                                                        <input class="form-control" name="featureName[]" title="" type="text" placeholder="Name">
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-6">
+                                                        <input class="form-control" name="featureValue[]" title="" type="text" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-2">
+                                                        <button class="btn btn-primary" type="button" app-feature-add>Add</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!----Submit Button--->
+                                            <div class="form-group m-t-10">
+                                                <button class="btn btn-primary btn-round justify-content-end" type="submit">Create Model</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -63,7 +160,6 @@ $List = $Brand->Listing();
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

@@ -8,7 +8,9 @@ use model\Admin;
 use model\Brand;
 use model\Customer;
 use model\General;
+use model\Jobs;
 use model\Model;
+use model\Staff;
 
 if(!defined("King_Framework")) die("you cannot access config file directly");
 
@@ -18,61 +20,21 @@ $controller = new Application();
 $Image = new Image();
 $Loader = $App->Load();
 
-$general = new General($db);
-$admin = new Admin($db);
-$customer = new Customer($db);
-$brand = new Brand($db);
-$model = new Model($db);
+$General = new General($db);
+$Admin = new Admin($db);
+$Customer = new Customer($db);
+$Brand = new Brand($db);
+$Model = new Model($db);
+$Staff = new Staff($db);
+$job = new Jobs($db);
 
 if(!isset($Mold_Controller)) die("Controller not found.");
 
 if (isset($_POST['tele_tech'])) {
 
     // The Admin Side ========================
-    if($admin->isLogedin()){
-        $Data = $admin->Data();
-
-        if(isset($_POST['updata-password'])){
-            $result = new stdClass();
-            $result->success = false;
-            $result->validated = true;
-            $oldpassword = trim($_POST['oldpassword']);
-            $newpassword = trim($_POST['newpassword']);
-            $repeatpassword = trim($_POST['repeatpassword']);
-
-
-            if(!Validation::password($oldpassword)){
-                $result->name = false;
-                $result->validated = false;
-            }
-            if(!Validation::password($newpassword)){
-                $result->name = false;
-                $result->validated = false;
-            }
-            if(!Validation::password($repeatpassword)){
-                $result->name = false;
-                $result->validated = false;
-            }
-
-            if($result->validated){
-                $oldpassword = Validation::sanitize($oldpassword);
-                if(!$admin->PasswordExist($oldpassword)) {
-                    if($newpassword != $repeatpassword){
-                        if ($admin->ResetPassword(["password" => $oldpassword, "newpassword" => $newpassword])) {
-                            $result->success = true;
-                            $result->url = Url::Url();
-                            $result->info = "Password Updated Successfully.";
-                        } else {
-                            $result->info = "Password do not march";
-                        }
-                    }
-                }else{
-                    $result->info = "Unable to Update Password";
-                }
-            }
-
-            echo json_encode($result);
-        }
+    if($Admin->isLogedin()){
+        $Data = $Admin->Data();
 
         /***PAGES ===============================***/
         if(isset($_POST["admin-pages"])){
@@ -85,12 +47,285 @@ if (isset($_POST['tele_tech'])) {
         }
 
 
+
+
+        /***STAFF ===============================***/
+        if(isset($_POST['staff-image'])){
+            $result = new stdClass();
+            $image = $_FILES['file'];
+            $time = time();
+            $img = $Staff->Upload($image,$time);
+            if($img){
+                $server_url = Url::get_server_upload_url().$img;
+                $server_url_save = Url::ChangeExtension($server_url,"jpg");
+                $public_url = Url::ChangeExtension($img,"jpg");
+
+                $imgc = $controller->Image();
+                $imgcomp = $imgc->setImage($server_url);
+                if(!is_null($imgcomp)) {
+                    $imgcomp->Recreate($General->imageBrandSize);
+
+                    $render = $imgcomp->PortraitOrientation()->Square()->Render();
+                    $render->setQuality($General->imageBrandQuality)->saveJPEG($server_url_save);
+
+                    //checking if the extension is a png then remove it
+                    if(!Url::CheckExtension($server_url,"jpg")){
+                        Url::fileRemove($server_url);
+                    }
+                    $result->url = Url::Url_upload($public_url);
+                    $result->uploadURL = $public_url;
+                    $result->success = true;
+                }else{
+                    Url::fileRemove($server_url);
+                    $result->info = "Unable to process image file.";
+                }
+            }else{
+                $result->info = "Picture File is not valid.";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['staff-add'])){
+            $result = new stdClass();
+            $result->validated = true;
+            $result->success = false;
+
+            $avatar = $_POST['avatar'];
+            $name = $_POST['name'];
+            $gender = $_POST['gender'];
+            $maritalStatus = $_POST['maritalStatus'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $ssn = $_POST['ssn'];
+            $country = $_POST['country'];
+            $city = $_POST['city'];
+            $residenceAddress = $_POST['residenceAddress'];
+
+            if(!Validation::text($avatar,20,40)){
+                $result->validated = false;
+                $result->avatar = false;
+                $result->avatar_t = "You need to upload a profile picture";
+            }
+            if(!Validation::text($name,6,40)){
+                $result->validated = false;
+                $result->name = false;
+                $result->name_t = "Enter a valid FirstName and LastName";
+            }
+            if(!Validation::text($gender,4,6)){
+                $result->validated = false;
+                $result->gender = false;
+                $result->gender_t = "Select a valid Gender";
+            }
+            if(!Validation::text($maritalStatus,5,15)){
+                $result->validated = false;
+                $result->maritalStatus = false;
+                $result->maritalStatus_t = "Select a valid Marital status";
+            }
+            if(Validation::email($email)){
+                $result->validated = false;
+                $result->email = false;
+                $result->email_t = "Enter a valid email address.";
+            }
+            if($Staff->ExistEmail($email)){
+                $result->validated = false;
+                $result->email = false;
+                $result->email_t = "Email has already been used by another staff.";
+            }
+            if(!Validation::text($phone,9,15)){
+                $result->validated = false;
+                $result->phone = false;
+                $result->phone_t = "Enter a valid phone number.";
+            }
+            if($Staff->ExistPhone($phone)){
+                $result->validated = false;
+                $result->phone = false;
+                $result->phone_t = "Phone number has already been used by another staff";
+            }
+            if(!Validation::text($ssn,9,15,true)){
+                $result->validated = false;
+                $result->ssn = false;
+                $result->ssn_t = "Enter a valid Social Security Number, should be between 8 and 15 digit code.";
+            }
+            if(!Validation::text($country,2,22)){
+                $result->validated = false;
+                $result->country = false;
+                $result->country_t = "Enter a valid Country.";
+            }
+            if(!Validation::text($city,2,22)){
+                $result->validated = false;
+                $result->city = false;
+                $result->city_t = "Enter a valid City.";
+            }
+            if(!Validation::text($residenceAddress,5,50)){
+                $result->validated = false;
+                $result->residenceAddress = false;
+                $result->residenceAddress_t = "Enter a valid Residence Address.";
+            }
+
+            if($result->validated){
+                $avatar = Validation::sanitize($avatar);
+                $name = Validation::sanitize($name);
+                $add = $Staff->Add($avatar,$name,$gender,$maritalStatus,$email,$phone,$ssn,$country,$city,$residenceAddress);
+                if($add){
+                    $result->success = true;
+                    $result->info = "Staff added successfully.";
+                }else{
+                    $result->info = "Unable to add Staff.";
+                }
+            }
+
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['staff-view'])){
+            $result = new stdClass();
+            $result->found = false;
+            $id = $_POST['id'];
+            if($Staff->CheckIDExist($id)){
+                $data = $Staff->Get($id);
+                $data->avatarURL = $data->avatar;
+                $data->avatar = Url::Url_upload($data->avatar);
+                $data->updated = $General->processDate($data->updated);
+                $data->created = $General->processDate($data->created);
+                $result->data = $data;
+                $result->found = true;
+            }else{
+                $result->info = "Brand was not found";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['staff-update'])){
+            $result = new stdClass();
+            $result->validated = true;
+            $result->success = false;
+
+            $id = $_POST['id'];
+            $avatar = $_POST['avatar'];
+            $name = $_POST['name'];
+            $gender = $_POST['gender'];
+            $maritalStatus = $_POST['maritalStatus'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $ssn = $_POST['ssn'];
+            $country = $_POST['country'];
+            $city = $_POST['city'];
+            $residenceAddress = $_POST['residenceAddress'];
+
+            if($Staff->CheckIDExist($id)) {
+                $data = $Staff->Get($id);
+                if (!Validation::text($avatar, 20, 40)) {
+                    $result->validated = false;
+                    $result->avatar = false;
+                    $result->avatar_t = "You need to upload a profile picture";
+                }
+                if (!Validation::text($name, 6, 40)) {
+                    $result->validated = false;
+                    $result->name = false;
+                    $result->name_t = "Enter a valid FirstName and LastName";
+                }
+                if (!Validation::text($gender, 4, 6)) {
+                    $result->validated = false;
+                    $result->gender = false;
+                    $result->gender_t = "Select a valid Gender";
+                }
+                if (!Validation::text($maritalStatus, 5, 15)) {
+                    $result->validated = false;
+                    $result->maritalStatus = false;
+                    $result->maritalStatus_t = "Select a valid Marital status";
+                }
+                if (Validation::email($email)) {
+                    $result->validated = false;
+                    $result->email = false;
+                    $result->email_t = "Enter a valid email address.";
+                }
+                if($data->email !== $email) {
+                    if ($Staff->ExistEmail($email)) {
+                        $result->validated = false;
+                        $result->email = false;
+                        $result->email_t = "Email has already been used by another staff.";
+                    }
+                }
+                if (!Validation::text($phone, 9, 15)) {
+                    $result->validated = false;
+                    $result->phone = false;
+                    $result->phone_t = "Enter a valid phone number.";
+                }
+                if($data->phone !== $phone) {
+                    if ($Staff->ExistPhone($phone)) {
+                        $result->validated = false;
+                        $result->phone = false;
+                        $result->phone_t = "Phone number has already been used by another staff";
+                    }
+                }
+                if (!Validation::text($ssn, 9, 15, true)) {
+                    $result->validated = false;
+                    $result->ssn = false;
+                    $result->ssn_t = "Enter a valid Social Security Number, should be between 8 and 15 digit code.";
+                }
+                if (!Validation::text($country, 2, 22)) {
+                    $result->validated = false;
+                    $result->country = false;
+                    $result->country_t = "Enter a valid Country.";
+                }
+                if (!Validation::text($city, 2, 22)) {
+                    $result->validated = false;
+                    $result->city = false;
+                    $result->city_t = "Enter a valid City.";
+                }
+                if (!Validation::text($residenceAddress, 5, 50)) {
+                    $result->validated = false;
+                    $result->residenceAddress = false;
+                    $result->residenceAddress_t = "Enter a valid Residence Address.";
+                }
+
+                if ($result->validated) {
+                    $name = Validation::sanitize($name);
+                    if ($Staff->Update($id,$avatar,$name,$gender,$maritalStatus,$email,$phone,$ssn,$country,$city,$residenceAddress)) {
+                        $result->success = true;
+                        $data = $Staff->Get($id);
+                        $result->dataID = $data->id;
+                        $result->dataName = $data->name;
+                        $result->dataEmail = $data->email;
+                        $result->dataPhone = $data->phone;
+                        $result->dataSSN = $data->ssn;
+                        $result->dataCity = $data->city;
+                        $result->info = "Staff Account Updated Successfully";
+
+                    } else {
+                        $result->info = "Unable to Update brand";
+                    }
+                } else {
+                    $result->info = "Unable to Update brand";
+                }
+
+            }else{
+                $result->info = "Staff ID does not exist.";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['staff-delete'])){
+            $result = new stdClass();
+            $result->success = false;
+            $id = $_POST['id'];
+            if($Staff->CheckIdExist($id)){
+                $Staff->RemoveProfile($id);
+                $result->success = !!$Staff->Remove($id);
+            }else{
+                $result->info = "Unable to remove Staff";
+            }
+            echo json_encode($result);
+        }
+
+
+
         /***BRANDS ===============================***/
         if(isset($_POST['brand-image'])){
             $result = new stdClass();
             $image = $_FILES['file'];
             $time = time();
-            $img = $brand->Upload($image,$time);
+            $img = $Brand->Upload($image,$time);
             if($img){
                 $server_url = Url::get_server_upload_url().$img;
                 $server_url_save = Url::ChangeExtension($server_url,"jpg");
@@ -101,10 +336,10 @@ if (isset($_POST['tele_tech'])) {
                 $imgc = $controller->Image();
                 $imgcomp = $imgc->setImage($server_url);
                 if(!is_null($imgcomp)) {
-                    $imgcomp->Recreate($general->imageBrandSize);
+                    $imgcomp->Recreate($General->imageBrandSize);
                     $imgcomp->PortraitOrientation();
                     $render = $imgcomp->Render();
-                    $render->setQuality($general->imageBrandQuality)
+                    $render->setQuality($General->imageBrandQuality)
                         ->saveJPEG($server_url_save);
                     //checking if the extension is a png then remove it
                     if(!Url::CheckExtension($server_url,"jpg")){
@@ -143,8 +378,8 @@ if (isset($_POST['tele_tech'])) {
 
             if($result->validated){
                 $name = Validation::sanitize($name);
-                if(!$brand->NameExist($name)) {
-                    if ($brand->Add(["name" => $name, "image" => $filename])) {
+                if(!$Brand->NameExist($name)) {
+                    if ($Brand->Add(["name" => $name, "image" => $filename])) {
                         $result->success = true;
                         $result->url = Url::Url();
                         $result->info = "Brand Created Successfully.";
@@ -163,8 +398,8 @@ if (isset($_POST['tele_tech'])) {
             $result = new stdClass();
             $result->found = false;
             $id = $_POST['id'];
-            if($brand->CheckIDExist($id)){
-                $data = $brand->Get($id);
+            if($Brand->CheckIDExist($id)){
+                $data = $Brand->Get($id);
                 $data->url = $data->image;
                 $data->image = Url::Url_upload($data->image);
                 $result->data = $data;
@@ -184,7 +419,7 @@ if (isset($_POST['tele_tech'])) {
             $name = $_POST['name'];
             $filename = trim($_POST['url']);
 
-                if ($brand->CheckIDExist($id)) {
+                if ($Brand->CheckIDExist($id)) {
 
                     if (!Validation::text($name,3,100)) {
                         $result->name = false;
@@ -199,9 +434,9 @@ if (isset($_POST['tele_tech'])) {
 
                     if($result->validated) {
                         $name = Validation::sanitize($name);
-                        if ($brand->UpdateBrand($id,["name" => $name, "image" => $filename])) {
+                        if ($Brand->UpdateBrand($id,["name" => $name, "image" => $filename])) {
                             $result->success = true;
-                            $data = $brand->Get($id);
+                            $data = $Brand->Get($id);
                             $result->dataID = $data->id;
                             $result->dataImage = Url::Url_upload($data->image);
                             $result->dataName = $data->name;
@@ -224,9 +459,10 @@ if (isset($_POST['tele_tech'])) {
             $result = new stdClass();
             $result->success = false;
             $id = $_POST['id'];
-            if($brand->CheckIdExist($id)){
-                if($model->GetTotal($id)==0){
-                    $result->success = !!$brand->Remove($id);
+            if($Brand->CheckIdExist($id)){
+                if($Model->GetTotal($id)==0){
+                    $Model->RemoveLogo($id);
+                    $result->success = !!$Brand->Remove($id);
                 }else{
                     $result->info = "Can not delete brand. <br> You need to delete all the model related to the brand.";
                 }
@@ -240,12 +476,62 @@ if (isset($_POST['tele_tech'])) {
 
 
         /***MODELS ===============================***/
+        if(isset($_POST['model-image'])){
+            $result = new stdClass();
+            $image = $_FILES['file'];
+            $time = time();
+            $img = $Model->Upload($image,$time);
+            if($img){
+                $server_url = Url::get_server_upload_url().$img;
+                $server_url_save = Url::ChangeExtension($server_url,"jpg");
+                $public_url = Url::ChangeExtension($img,"jpg");
+
+                $result->ddd = $server_url_save;
+
+                $imgc = $controller->Image();
+                $imgcomp = $imgc->setImage($server_url);
+                if(!is_null($imgcomp)) {
+                    $imgcomp->Recreate($General->imageBrandSize);
+                    $imgcomp->PortraitOrientation();
+                    $imgcomp->Square();
+                    $render = $imgcomp->Render();
+                    $render->setQuality($General->imageBrandQuality)
+                        ->saveJPEG($server_url_save);
+                    //checking if the extension is a png then remove it
+                    if(!Url::CheckExtension($server_url,"jpg")){
+                        Url::fileRemove($server_url);
+                    }
+                    $result->url = Url::Url_upload($public_url);
+                    $result->uploadURL = $public_url;
+                    $result->success = true;
+                }else{
+                    Url::fileRemove($server_url);
+                    $result->info = "Unable to process image file.";
+                }
+            }else{
+                $result->info = "Picture File is not valid.";
+            }
+            echo json_encode($result);
+        }
+
         if(isset($_POST['model_add'])){
             $result = new stdClass();
             $result->success = false;
             $result->validated = true;
             $brandId = trim($_POST['brand']);
             $name = trim($_POST['name']);
+            $price = trim($_POST['price']);
+            $description = trim($_POST['description']);
+            $banner = trim($_POST['url']);
+            $front = trim($_POST['front-url']);
+            $back = trim($_POST['back-url']);
+            $top = trim($_POST['top-url']);
+            $down = trim($_POST['down-url']);
+            $left = trim($_POST['left-url']);
+            $right = trim($_POST['right-url']);
+            $featureName = $_POST['featureName'];
+            $featureValue = $_POST['featureValue'];
+
 
             if(!Validation::number($brandId,1)){
                 $result->brand = false;
@@ -257,14 +543,92 @@ if (isset($_POST['tele_tech'])) {
                 $result->name_t = "Model requires at least 3 characters.";
                 $result->validated = false;
             }
+            if(!Validation::text($price,3,100)){
+                $result->price = false;
+                $result->price_t = "Price requires at least 3 characters.";
+                $result->validated = false;
+            }
+            if(!Validation::text($description,20,1300)){
+                $result->description = false;
+                $result->description_t = "Description requires at least 20 characters and cannot be more than 1300 characters.";
+                $result->validated = false;
+            }
+            if(!Validation::text($banner,20,40)){
+                $result->banner = false;
+                $result->banner_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($front,20,40)){
+                $result->front = false;
+                $result->front_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($back,20,40)){
+                $result->back = false;
+                $result->back_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($top,20,40)){
+                $result->top = false;
+                $result->top_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($down,20,40)){
+                $result->down = false;
+                $result->down_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($left,20,40)){
+                $result->left = false;
+                $result->left_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!Validation::text($right,20,40)){
+                $result->right = false;
+                $result->right_t = "There was no file uploaded.";
+                $result->validated = false;
+            }
+            if(!(count($featureName) and count($featureValue))){
+                $result->feature = false;
+                $result->feature_t = "You need to enter at least one feature for this device.";
+                $result->validated = false;
+            }
+            if(!count($featureName) === count($featureValue)){
+                $result->feature = false;
+                $result->feature_t = "An error occurred in the feature, please reload and try again.";
+                $result->validated = false;
+            }
+
 
             if($result->validated){
                 $brandId = Validation::sanitize($brandId);
                 $name = Validation::sanitize($name);
-                if(!$model->NameExist($brandId,$name)) {
-                    if ($model->Add(["brand" => $brandId, "name" => $name])) {
+
+                $featuresArr = [];
+                $featureName = array_filter($featureName);
+                foreach ($featureName as $id=>$item){
+                    $fname = $item;
+                    $fvalue = $featureValue[$id];
+                    $featuresArr[] = ['name'=>$fname,'value'=>$fvalue];
+                }
+                $enfeatures = json_encode($featuresArr);
+
+                if(!$Model->NameExist($brandId,$name)) {
+                    if ($Model->Add([
+                            "brand" => $brandId,
+                            "name" => $name,
+                            "features" => $enfeatures,
+                            "description"=>$description,
+                            "price"=>$price,
+                            "banner"=>$banner,
+                            "sideFront"=>$front,
+                            "sideBack"=>$back,
+                            "sideTop"=>$top,
+                            "sideDown"=>$down
+                            ,"sideLeft"=>$left,
+                            "sideRight" =>$right,
+                    ])) {
                         $result->success = true;
-                        $result->url = Url::Url();
                         $result->info = "Model Created Successfully.";
                     } else {
                         $result->info = "Unable to create Model";
@@ -281,12 +645,31 @@ if (isset($_POST['tele_tech'])) {
             $result = new stdClass();
             $result->found = false;
             $id = $_POST['id'];
-            if($model->CheckIDExist($id)){
-                $data = $model->Get($id);
-                $id = $data->id;
-                $name = $data->name;
-                $brandName = $data->brand;
-                $upated = $data->updated;
+            if($Model->CheckIDExist($id)){
+                $data = $Model->Get($id);
+                $data->brandName = $Brand->GetName($data->brand);
+                $data->brandIcon = $Brand->GetIcon($data->brand);
+
+                $data->bannerRel = $data->banner;
+                $data->sideBackRel = $data->sideBack;
+                $data->sideFrontRel = $data->sideFront;
+                $data->sideLeftRel = $data->sideLeft;
+                $data->sideRightRel = $data->sideRight;
+                $data->sideTopRel = $data->sideTop;
+                $data->sideDownRel = $data->sideDown;
+
+                $data->banner = $General->processImage($data->banner);
+                $data->sideBack = $General->processImage($data->sideBack);
+                $data->sideFront = $General->processImage($data->sideFront);
+                $data->sideLeft = $General->processImage($data->sideLeft);
+                $data->sideRight = $General->processImage($data->sideRight);
+                $data->sideTop = $General->processImage($data->sideTop);
+                $data->sideDown = $General->processImage($data->sideDown);
+
+                $data->priceText = $General->processPrice($data->price);
+                $data->created = $General->processDate($data->created);
+                $data->updated = $General->processDate($data->updated);
+
                 $result->data = $data;
                 $result->found = true;
             }else{
@@ -301,51 +684,276 @@ if (isset($_POST['tele_tech'])) {
             $result->validated = true;
 
             $id = $_POST['id'];
-            $name = $_POST['name'];
             $brandId = trim($_POST['brand']);
+            $name = trim($_POST['name']);
+            $price = trim($_POST['price']);
+            $description = trim($_POST['description']);
+            $banner = trim($_POST['url']);
+            $left = trim($_POST['left-url']);
+            $right = trim($_POST['right-url']);
+            $top = trim($_POST['top-url']);
+            $down = trim($_POST['down-url']);
+            $front = trim($_POST['front-url']);
+            $back = trim($_POST['back-url']);
+            $featureName = $_POST['featureName'];
+            $featureValue = $_POST['featureValue'];
 
-            if ($model->CheckIDExist($id)) {
+            if(Validation::number($id)) {
+                if ($Model->CheckIDExist($id)) {
+                    if (!Validation::number($brandId, 1)) {
+                        $result->brand = false;
+                        $result->brand_t = "Selected brand does not exist.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($name, 3, 100)) {
+                        $result->name = false;
+                        $result->name_t = "Model requires at least 3 characters.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($price, 3, 100)) {
+                        $result->price = false;
+                        $result->price_t = "Price requires at least 3 characters.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($description, 20, 1300)) {
+                        $result->description = false;
+                        $result->description_t = "Description requires at least 20 characters and cannot be more than 1300 characters.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($banner, 20, 40)) {
+                        $result->banner = false;
+                        $result->banner_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($front, 20, 40)) {
+                        $result->front = false;
+                        $result->front_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($back, 20, 40)) {
+                        $result->back = false;
+                        $result->back_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($top, 20, 40)) {
+                        $result->top = false;
+                        $result->top_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($down, 20, 40)) {
+                        $result->down = false;
+                        $result->down_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($left, 20, 40)) {
+                        $result->left = false;
+                        $result->left_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!Validation::text($right, 20, 40)) {
+                        $result->right = false;
+                        $result->right_t = "There was no file uploaded.";
+                        $result->validated = false;
+                    }
+                    if (!(count($featureName) and count($featureValue))) {
+                        $result->feature = false;
+                        $result->feature_t = "You need to enter at least one feature for this device.";
+                        $result->validated = false;
+                    }
+                    if (!count($featureName) === count($featureValue)) {
+                        $result->feature = false;
+                        $result->feature_t = "An error occurred in the feature, please reload and try again.";
+                        $result->validated = false;
+                    }
 
-                if (!Validation::text($name,3,100)) {
-                    $result->name = false;
-                    $result->name_t = "There was no name given";
-                    $result->validated = false;
-                }
-                if(!Validation::number($brandId,1)){
-                    $result->brand = false;
-                    $result->brand_t = "Selected brand does not exist.";
-                    $result->validated = false;
-                }
+                    if ($result->validated) {
+                        $brandId = Validation::sanitize($brandId);
+                        $name = Validation::sanitize($name);
+                        $description = Validation::sanitize($description);
 
-                if($result->validated) {
-                    $brandId = Validation::sanitize($brandId);
-                    $name = Validation::sanitize($name);
-                    if ($model->UpdateModel($id,["name" => $name, "brand" => $brandId])) {
-                        $result->success = true;
-                        $data = $model->Get($id);
-                        $result->dataID = $data->id;
-                        $result->dataName = $data->name;
-                        $result->brandID = $data->brand;
-                        $result->dataUpdate = date("Y-m-d (h:iA)",floatval($data->updated));
-                        $result->info = "Model Updated Successfully";
+                        $featuresArr = [];
+                        $featureName = array_filter($featureName);
+                        foreach ($featureName as $fid=>$item){
+                            $fname = trim($item);
+                            $fvalue = trim($featureValue[$fid]);
+                            $featuresArr[] = ['name'=>$fname,'value'=>$fvalue];
+                        }
+                        $enfeatures = json_encode($featuresArr);
 
+                        $updated = $Model->Update($id,$name,$brandId,$price,$description,$banner,$top,$down,$front,$back,$left,$right,$enfeatures);
+                        if ($updated) {
+                            $result->success = true;
+                            $data = $Model->Get($id);
+                            $result->dataID = $data->id;
+                            $result->dataName = $data->name;
+                            $result->dataPrice = $General->processPrice($data->price);
+                            $result->dataBrand = $Brand->GetName($data->brand);
+                            $result->dataUpdate = date($General->dateFormat, floatval($data->updated));
+                            $result->info = "Model Updated Successfully";
+                        } else {
+                            $result->info = "Unable to Update model";
+                        }
                     } else {
                         $result->info = "Unable to Update model";
                     }
-                }else{
-                    $result->info = "Unable to Update model";
+
+                } else {
+                    $result->info = "Model Id don't exit.";
                 }
             }else{
-                $result->info = "Model Id don't exit";
+                $result->info = "Model Id is not valid.";
             }
             echo json_encode($result);
         }
 
+        if(isset($_POST['delete-Model'])){
+            $result = new stdClass();
+            $result->success = false;
+            $id = $_POST['id'];
+            if($Model->CheckIdExist($id)){
+                $Model->RemoveLogo($id);
+                if($Model->Remove($id)){
+                    $result->success = true;
+                }else{
+                    $result->info = "Unable to remove Model";
+                }
+            }else{
+                $result->info = "Model ID does not exit.";
+            }
+            echo json_encode($result);
+        }
+
+        /***NEWS JOBS ===============================***/
+        if(isset($_GET['file-image'])){
+            $result = new stdClass();
+            $image = $_FILES['file'];
+
+            $time = time();
+            $img = $job->Upload($image,$time);
+            if($img){
+                $server_url = Url::get_server_upload_url().$img;
+                $server_url_save = Url::ChangeExtension($server_url,"jpg");
+                $public_url = Url::ChangeExtension($img,"jpg");
+
+
+                $imgc = $controller->Image();
+                $imgcomp = $imgc->setImage($server_url);
+                if(!is_null($imgcomp)) {
+                    $imgcomp->Recreate($General->imageBrandSize);
+                    $imgcomp->PortraitOrientation();
+                    $render = $imgcomp->Render();
+                    $render->setQuality($General->imageBrandQuality)
+                        ->saveJPEG($server_url_save);
+                    //checking if the extension is a png then remove it
+                    if(!Url::CheckExtension($server_url,"jpg")){
+                        Url::fileRemove($server_url);
+                    }
+                    $result->url = Url::Upload_dir().$public_url;
+                }else{
+                    Url::fileRemove($server_url);
+                    $result->info = "Unable to process image file.";
+                }
+            }else{
+                $result->info = "Picture File is not valid.";
+            }
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['jobs_add'])){
+            $result = new stdClass();
+            $result->success = false;
+            $result->validated = true;
+            $title = trim($_POST['title']);
+            $body = $_POST['body'];
+
+            $body = str_replace("<script>","",$body);
+            $body = str_replace("</script>","",$body);
+            $body = str_replace("onload=","",$body);
+            $body = str_replace("onclick","",$body);
+            $body = str_replace("onchange","",$body);
+
+            if(!Validation::text($title,3,100)){
+                $result->title = false;
+                $result->title_t = "Title requires at least 3 characters.";
+                $result->validated = false;
+            }
+
+
+
+            if($result->validated){
+                $title = Validation::sanitize($title);
+                if(!$job->TitleExist($title)) {
+                    if ($job->Add(["title" => $title, "body" => $body])) {
+                        $result->success = true;
+                        $result->url = Url::Url();
+                        $result->info = "Job Created Successfully.";
+                    } else {
+                        $result->info = "Unable to create jobs";
+                    }
+                }else{
+                    $result->info = "The entered title has already been created, please try another title.";
+                }
+            }
+
+            echo json_encode($result);
+        }
+
+        if(isset($_POST['delete-jobs'])){
+            $result = new stdClass();
+            $result->success = false;
+            $id = $_POST['id'];
+            if($Model->CheckIDExist($id)){
+                if($job->Remove($id)){
+                    $result->success = true;
+                }else{
+                    $result->info = "Unable to remove Job";
+                }
+            }else{
+                $result->info = "Job ID does not exit.";
+            }
+            echo json_encode($result);
+        }
+
+
+        /**ADMIN SETTINGS ======================================**/
+        if(isset($_POST['update-password'])){
+            $result = new stdClass();
+            $result->success = false;
+
+            $oldPassword = $_POST['oldPassword'];
+            $newPassword = $_POST['newPassword'];
+            $confPassword = $_POST['repeatPassword'];
+
+            if (!Validation::password($oldPassword) and !Validation::password($newPassword)) {
+                if($newPassword === $confPassword) {
+                    if($Admin->verifyPassword($Data->id,$oldPassword)){
+                        $password = $controller->Hashing()->PasswordHash(Validation::sanitize($newPassword));
+                        if ($Admin->UpdatePassword($Data->id, $password)) {
+                            $result->success = true;
+                            $result->info = "Admin Password Updated Successfully";
+                        } else {
+                            $result->info = "Unable to Update Admin Password";
+                        }
+                    }else{
+                        $result->info = "Old Password does not match";
+                    }
+                }else{
+                    $result->info = "Passwords does not match.";
+                }
+            }else{
+                $result->info = "The old or new password is not valid.";
+            }
+            echo json_encode($result);
+        }
+
+
+
+
         /***ADMIN PUBLIC ===============================***/
         if (isset($_POST['signout'])) {
             $result = new stdClass();
-            $result->success = true;
             $result->info = "Account already signed out";
+            $result->success = $Admin->Signout();
             $result->url = Url::Url();
             echo json_encode($result);
         }
@@ -356,8 +964,8 @@ if (isset($_POST['tele_tech'])) {
 
 
     // The Customer side =========================
-    if ($customer->IsLogedin()) {
-        $Data = $customer->Data();
+    if ($Customer->IsLogedin()) {
+        $Data = $Customer->Data();
 
         if (isset($_POST['signout'])) {
             $result = new stdClass();
@@ -372,7 +980,7 @@ if (isset($_POST['tele_tech'])) {
 
 
 
-    if (!$customer->IsLogedin() or !$admin->isLogedin()) {
+    if (!$Customer->IsLogedin() or !$Admin->isLogedin()) {
 
         // admin login function ============================
         if (isset($_POST['admin---login'])) {
@@ -387,7 +995,7 @@ if (isset($_POST['tele_tech'])) {
                 $email = Validation::sanitize($db->escape($email));
                 $password = Validation::sanitize($db->escape($password));
 
-                if ($admin->login(['email'=>$email, 'password'=>$password])) {
+                if ($Admin->login(['email'=>$email, 'password'=>$password])) {
                     $result->success = true;
                     $result->url = Url::Url();
                     $result->info = "Successfully login";
@@ -412,7 +1020,7 @@ if (isset($_POST['tele_tech'])) {
             if ((!Validation::email($email)) and !Validation::password($password)) {
                 $email = Validation::sanitize($db->escape($email));
                 $password = Validation::sanitize($db->escape($password));
-                if ($customer->Login(['email' => $email, 'password' => $password])) {
+                if ($Customer->Login(['email' => $email, 'password' => $password])) {
                     $result->success = true;
                     $result->url = Url::Url_to("index");
                     $result->info = "Login Successfully";
@@ -461,9 +1069,9 @@ if (isset($_POST['tele_tech'])) {
                 $firstname = Validation::sanitize($firstname);
                 $lastname = Validation::sanitize($lastname);
                 $email = Validation::sanitize($email);
-                $password = Validation::sanitize($password);
+                $password = $controller->Hashing()->PasswordHash(Validation::sanitize($password));
 
-                $user = $customer->register([$firstname,$lastname,$email,$password]);
+                $user = $Customer->register([$firstname,$lastname,$email,$password]);
                 if ($user){
                     $result->success = true;
                     $result->url = Url::Url_to("login");

@@ -30,19 +30,6 @@ class Admin{
          $this->encrypt = $this->control->Encryption();
 
      }
-    public function PasswordExist($password){
-        $database = $this->db;
-        $exist = $database("SELECT COUNT(id) AS exist FROM admin WHERE password=?",[$password])->fetchArrayOpt();
-        return $exist->exist > 0;
-    }
-
-     public function ResetPassword(array  $data){
-         $db = $this->db;
-         $newpass = $data['password'];
-         $oldpass = $data['password'];
-         $result = $db("UPDATE admin SET password=:npass WHERE password=:pass",[':npass'=>$newpass,':pass'=>$oldpass]);
-         return $result;
-     }
 
      public function Data(){
          $result = new stdClass();
@@ -58,7 +45,7 @@ class Admin{
                  if (Validation::LoginId($deid) and Validation::LoginHash($dehash)) {
                      $deid = Validation::sanitize($this->db->escape($deid));
                      $dehash = Validation::sanitize($this->db->escape($dehash));
-                     $user = $database("SELECT id, email FROM admin WHERE id=:id AND hash=:hash", [':id' => $deid, ':hash' => $dehash])->fetchObject();
+                     $user = $database("SELECT id, email FROM admin WHERE id=:id AND hash=:hash", [':id' => $deid, ':hash' => $dehash])->fetchArrayOpt();
                      $result = $user;
                  }
              }catch (Exception $ex){
@@ -126,6 +113,21 @@ class Admin{
      }
 
 
+
+    public function verifyPassword($id,$password){
+        $database = $this->db;
+        $user = $database("SELECT id,password FROM admin WHERE id=:id",[':id' => $id])->fetchArrayOpt();
+        if (isset($user->password)) {
+            $hash = $user->password;
+            return $this->control->Hashing()->PasswordVerify($password, $hash);
+        }
+    }
+
+    public function UpdatePassword(int $id,string $password):bool{
+        $db = $this->db;
+        return $db("UPDATE admin SET password=:password WHERE id=:id",[':id'=>$id,':password'=>$password])->isUpdated();
+    }
+
      function LoginEncode($data):string {
          return $this->encrypt->AesEncrypt(base64_encode($data));
      }
@@ -133,4 +135,10 @@ class Admin{
      function LoginDecode($data):string {
          return base64_decode($this->encrypt->AesDecrypt($data));
      }
+
+    public function Signout(){
+        $cookies = $this->cookies;
+        $cookies->RemoveCookie($this->cookie_id)->RemoveCookie($this->cookie_hash);
+        return true;
+    }
  }

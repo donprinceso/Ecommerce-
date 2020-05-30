@@ -27,6 +27,7 @@ class Customer{
         }
         $this->control = new Application();
         $this->cookies = $this->control->Cookies();
+        $this->encrypt = $this->control->Encryption();
     }
 
     public function __destruct()

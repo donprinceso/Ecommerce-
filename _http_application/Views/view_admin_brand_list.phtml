@@ -3,9 +3,11 @@
 use application\database\Database;
 use application\locations\Url;
 use model\Brand;
+use model\General;
 
 $db = new Database();
 $Brand = new Brand($db);
+$General = new General($db);
 $List = $Brand->Listing();
 ?>
 <div class="pcoded-inner-content brand-list collection-add" app-brand>
@@ -57,33 +59,42 @@ $List = $Brand->Listing();
                                         </thead>
                                         <tbody>
                                         <?php
-                                        foreach ($List as $item){
-                                            $id = $item->id;
-                                            $name = $item->name;
-                                            $totalModels = $item->totalModels;
-                                            $filename = Url::Url_upload($item->image);
-                                            $created = date("Y-m-d (h:iA)",floatval($item->created));
-                                            $updated = (is_null($item->updated))?
-                                                "Not Updated Yet":
-                                                date("Y-m-d (h:iA)",floatval($item->updated));
+                                        if(count($List)) {
+                                            foreach ($List as $item) {
+                                                $id = $item->id;
+                                                $name = $item->name;
+                                                $totalModels = $item->totalModels;
+                                                $filename = Url::Url_upload($item->image);
+                                                $created = date($General->dateFormat, floatval($item->created));
+                                                $updated = (is_null($item->updated)) ?
+                                                    "Not Updated Yet" :
+                                                    date($General->dateFormat, floatval($item->updated));
+                                                ?>
+                                                <tr app-brand-item="<?= $id ?>">
+                                                    <th><?= $id ?></th>
+                                                    <td>
+                                                        <img class="brand-logo" app-update-filename
+                                                             src="<?= $filename ?>" alt="Brand">
+                                                    </td>
+                                                    <td app-update-name><?= $name ?></td>
+                                                    <td><?= $totalModels ?></td>
+                                                    <td><?= $created ?></td>
+                                                    <td app-update-update><?= $updated ?></td>
+                                                    <td class="right">
+                                                        <button app-edit class="btn btn-sm btn-info">
+                                                            <span class="fa fa-edit"></span>
+                                                        </button>
+                                                        <button app-delete class="btn btn-sm btn-danger">
+                                                            <span class="fa fa-remove"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        }else{
                                             ?>
-                                            <tr app-brand-item="<?=$id?>">
-                                                <th><?=$id?></th>
-                                                <td>
-                                                    <img class="brand-logo" app-update-filename src="<?=$filename?>" alt="Brand">
-                                                </td>
-                                                <td app-update-name><?=$name?></td>
-                                                <td><?=$totalModels?></td>
-                                                <td><?=$created?></td>
-                                                <td app-update-update><?=$updated?></td>
-                                                <td class="right">
-                                                    <button app-edit class="btn btn-sm btn-info" data-toggle="modal" data-target="#edit-brand">
-                                                        <span class="fa fa-edit"></span>
-                                                    </button>
-                                                    <button app-delete class="btn btn-sm btn-danger">
-                                                        <span class="fa fa-remove"></span>
-                                                    </button>
-                                                </td>
+                                            <tr>
+                                                <td colspan="12" class="text-center">There are no models added yet</td>
                                             </tr>
                                             <?php
                                         }
@@ -108,7 +119,7 @@ $List = $Brand->Listing();
                                                         <form app-brand-update>
                                                             <div class="row">
                                                                 <div class="col-lg-5 brand-image">
-                                                                    <img src="browser/dash/images/brand-icon.png" class="brand-logo img-thumbnail" app-brand-preview>
+                                                                    <img src="browser/images/brands/brand.jpg" class="brand-logo img-thumbnail" app-brand-preview>
                                                                     <input type="file" accept="image/jpg,image/jpeg,image/png" class="brand-file" app-brand-file>
                                                                     <div class="img-loader" app-brand-loader>
                                                                         <i class="fa fa-spinner fa-spin"></i>

@@ -1,0 +1,94 @@
+<div class="pcoded-inner-content staff-add" app-staff>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row align-items-end mb-3">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>Add Staff</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:"> <i class="feather icon-home"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="javascript:">Staff</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="javascript:">Add Staff</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card container">
+                            <div class="card-header">
+                                <h5>Create</h5>
+                            </div>
+                            <div class="card-block">
+                                <form app-staff-add>
+                                    <div class="row">
+                                        <div class="offset-md-3 col-md-6 offset-sm-1 col-sm-10">
+                                            <div class="pb-3 text-center avatar-hold">
+                                                <img class="img-thumbnail avatar" app-avatar-preview src="browser/images/avatar.png">
+                                                <div class="img-loader" app-avatar-loader><i class="fa fa-spin fa-spinner"></i></div>
+                                                <input type="file" app-avatar-file>
+                                                <input type="hidden" name="avatar">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="name" class="form-control" placeholder="Full Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <select type="text" name="gender" class="form-control">
+                                                    <option value="">Gender</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select type="text" name="maritalStatus" class="form-control">
+                                                    <option value="">Marital Status</option>
+                                                    <option value="single">Single</option>
+                                                    <option value="married">Married</option>
+                                                    <option value="divorced">Divorced</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="email" class="form-control" placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="phone" class="form-control" placeholder="Phone number">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="ssn" class="form-control" placeholder="Social Security Number (Optional)">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="country" class="form-control" placeholder="Country">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="city" class="form-control" placeholder="City">
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea type="text" name="residenceAddress" rows="5" style="resize:none" class="form-control" placeholder="Residence Address"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Register Staff</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

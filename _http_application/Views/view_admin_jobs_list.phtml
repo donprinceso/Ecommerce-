@@ -1,0 +1,187 @@
+<?php
+
+use application\database\Database;
+use model\General;
+use model\Jobs;
+
+$db = new Database();
+$job = new Jobs($db);
+$General = new General($db);
+$List = $job->listing();
+?>
+<div class="pcoded-inner-content brand-list collection-add" app-news-list>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row align-items-end mb-3">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>News Post Manage</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="#"> <i class="feather icon-home"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">News Post</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Manage News Post</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>News Title</th>
+                                            <th>Total Reviews</th>
+                                            <th>Created</th>
+                                            <th>Last Updated</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        if(count($List)) {
+                                        foreach ($List as $item) {
+                                        $id = $item->id;
+                                        $title = $item->title;
+                                        $totalView = $item->view;
+                                        $created = date($General->dateFormat, floatval($item->created));
+                                        $updated = (!is_null($item->updated)) ?
+                                            "Not Updated Yet" :
+                                            date($General->dateFormat, floatval($item->updated));
+                                        ?>
+                                            <tr app-job-id="<?= $id?>">
+                                                <th><?= $id?></th>
+                                                <td ><?= $title?></td>
+                                                <td><?= $totalView?></td>
+                                                <td><?=$created?></td>
+                                                <td><?=$updated?></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-success" app-view-news><i class="fa fa-id-card"></i></button>
+                                                    <button  class="btn btn-sm btn-info" app-edit-news><i class="fa fa-edit"></i></button>
+                                                    <button app-news-delete class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></button>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        }else{
+                                            ?>
+                                            <tr>
+                                                <td colspan="12" class="text-center">There are no Jobs News Posted yet</td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-------MODAL BEGIN HERE--->
+                            <!-------EDIT MODAL BEGIN HERE--->
+                            <div app-edit class="modal fade" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="login-card card-block modal-body">
+                                        <div class="md-float-material">
+                                            <div class="card m-t-15">
+                                                <div class="auth-box card-block">
+                                                    <div class="row m-b-20">
+                                                        <div class="col-md-12">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="text-left txt-primary">Edit Job Post</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <form app-job-update>
+                                                            <div class="form-group">
+                                                                <input class="form-control form-control-info" name="title" type="text" placeholder="Tilte"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <textarea job-body name="body" class="form-control" rows="10" cols="80"  id="editor1" ></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="submit" class="btn btn-primary btn-round pull-right">
+                                                                    Update Job Post
+                                                                </button>
+                                                            </div>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-----EDIT END MODAL----->
+                            <!-----VIEW MODAL----->
+                            <div app-view class="modal fade" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="login-card card-block modal-body">
+                                        <div class="md-float-material">
+                                            <div class="card m-t-15">
+                                                <div class="auth-box card-block">
+                                                    <div class="row m-b-20">
+                                                        <div class="col-md-12">
+                                                            <h4 class="text-left txt-primary">Edit Brand</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <form app-brand-update>
+                                                            <div class="row">
+                                                                <div class="col-lg-5 brand-image">
+                                                                    <img src="browser/dash/images/brand-icon.png" class="brand-logo img-thumbnail" app-brand-preview>
+                                                                    <input type="file" accept="image/jpg,image/jpeg,image/png" class="brand-file" app-brand-file>
+                                                                    <div class="img-loader" app-brand-loader>
+                                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-7">
+                                                                    <div class="form-group">
+                                                                        <input type="text" name="name" class="form-control" placeholder="Brand Name">
+                                                                        <input type="hidden" app-brand-link name="url">
+                                                                        <input type="hidden" app-brand-id name="id">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-primary btn-round pull-right">
+                                                                            Update Brand
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-------VIEW MODAL ENDS HERE--->
+                            <!-------MODAL ENDS HERE--->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

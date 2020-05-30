@@ -2,16 +2,20 @@
 
 use application\database\Database;
 use model\Brand;
+use model\General;
 use model\Model;
 
 $db = new Database();
 $Model = new Model($db);
 $List = $Model->Listing();
 $Brand = new Brand($db);
+$General = new General($db);
+
 $brandList = $Brand->Listing();
 ?>
-<div class="pcoded-inner-content" app-model>
+<div class="pcoded-inner-content model-list" app-model>
     <div class="main-body">
+
         <div class="page-wrapper">
             <div class="row align-items-end mb-3">
                 <div class="col-lg-8">
@@ -35,6 +39,7 @@ $brandList = $Brand->Listing();
                     </div>
                 </div>
             </div>
+
             <div class="page-body">
                 <div class="row">
                     <div class="col-sm-12">
@@ -42,14 +47,16 @@ $brandList = $Brand->Listing();
                             <div class="card-header">
                                 <h5>Models List</h5>
                             </div>
-                            <div class="card-block table-border-style">
-                                <div class="table-responsive">
+
+                            <div class="card-block">
+                                <div class="dt-responsive table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Model Name</th>
                                             <th>Brand Name</th>
+                                            <th>Price</th>
                                             <th>Created</th>
                                             <th>Modified</th>
                                             <th>Action</th>
@@ -57,76 +64,256 @@ $brandList = $Brand->Listing();
                                         </thead>
                                         <tbody>
                                         <?php
-                                            foreach ($List as $item){
+                                        if(count($List)) {
+                                            foreach ($List as $item) {
                                                 $id = $item->id;
                                                 $name = $item->name;
                                                 $brand = $item->brand;
-                                                $created = date("Y-m-d (h:iA)",floatval($item->created));
-                                                $updated = (is_null($item->updated))?
-                                                    "Not Updated Yet":
-                                                    date("Y-m-d (h:iA)",floatval($item->updated));
+                                                $price = $General->processPrice($item->price);
+                                                $image = $General->processImage($item->banner);
+                                                $created = $General->processDate($item->created);
+                                                $updated = (is_null($item->updated)) ?
+                                                    "Not Updated Yet" :
+                                                    $General->processDate($item->updated);
                                                 ?>
-                                                <tr app-model-id="<?=$id?>">
-                                                    <th scope="row"><?=$id?></th>
-                                                    <td><?=$name?></td>
-                                                    <td><?=$brand?></td>
-                                                    <td><?=$created?></td>
-                                                    <td><?=$updated?></td>
+                                                <tr app-model-id="<?= $id ?>">
+                                                    <th scope="row"><?= $id ?></th>
+                                                    <td app-update-name><img class="model-icon"
+                                                                             src="<?= $image ?>"><?= $name ?></td>
+                                                    <td app-update-brand><?= $brand ?></td>
+                                                    <td app-update-price><?= $price ?></td>
+                                                    <td><?= $created ?></td>
+                                                    <td app-updated><?= $updated ?></td>
                                                     <td>
-                                                        <a href="#" app-edit class="btn btn-sm btn-info" data-toggle="modal" data-target="#edit-model">
+                                                        <button app-view class="btn btn-sm btn-info">
+                                                            <span class="fa fa-id-card"></span>
+                                                        </button>
+                                                        <button app-edit class="btn btn-sm btn-info">
                                                             <span class="fa fa-edit"></span>
-                                                        </a>
-                                                        <a href="#" app-delete class="btn btn-sm btn-danger">
+                                                        </button>
+                                                        <button app-delete class="btn btn-sm btn-danger">
                                                             <span class="fa fa-remove"></span>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 <?php
                                             }
+                                        }else{
+                                            ?>
+                                            <tr>
+                                                <td colspan="12" class="text-center">There are no models added yet</td>
+                                            </tr>
+                                            <?php
+                                        }
                                         ?>
                                         </tbody>
                                     </table>
 
                                     <!-------MODAL BEGIN HERE--->
-                                    <div app-edit-box class="modal fade" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                    <div app-view-box class="modal fade" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
                                             <div class="login-card card-block modal-body">
                                                 <div class="md-float-material">
                                                     <div class="card m-t-15">
                                                         <div class="auth-box card-block">
                                                             <div class="row m-b-20">
                                                                 <div class="col-md-12">
-                                                                    <h4 class="text-left txt-primary">Edit Model</h4>
+                                                                    <h4 class="text-left txt-primary">
+                                                                        <img app-top-view-brand-logo class="model-icon" src="browser/images/brands/brand.jpg">
+                                                                        <span app-top-view-name>Brand Name, Model name</span>
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <div class="row">
+                                                                            <img app-view-bannar src="browser/images/models/model.jpg" class="col-12 main-images">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6 sol-sm-12">
+                                                                        <div class="row">
+                                                                            <img app-view-sideleft src="browser/images/models/model-left.jpg" class="col-4 side-images">
+                                                                            <img app-view-sideright src="browser/images/models/model-right.jpg" class="col-4 side-images">
+                                                                            <img app-view-sidetop src="browser/images/models/model-top.jpg" class="col-4 side-images">
+                                                                            <img app-view-sidedown src="browser/images/models/model-bottom.jpg" class="col-4 side-images">
+                                                                            <img app-view-sidefront src="browser/images/models/model-front.jpg" class="col-4 side-images">
+                                                                            <img app-view-sideback src="browser/images/models/model-back.jpg" class="col-4 side-images">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row pt-3">
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <div class="row">
+                                                                            <div class="col-12 view-item">
+                                                                                Brand Name: <span view-brand class="value">Nokia</span>
+                                                                            </div>
+                                                                            <div class="col-12 view-item">
+                                                                                Model Name: <span view-model class="value">Nokia 11</span>
+                                                                            </div>
+                                                                            <div class="col-12 view-item">
+                                                                               Model Price: <span view-price class="value">$300</span>
+                                                                            </div>
+                                                                            <div class="col-12 view-item">
+                                                                                Features:
+                                                                                <div class="value list">
+                                                                                    <table app-features>
+                                                                                        <tr>
+                                                                                            <th>Name</th>
+                                                                                            <th>Value</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>Color</td>
+                                                                                            <td>Red, Blue, Black</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>Ram</td>
+                                                                                            <td>4GB, 6GB</td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <div class="row">
+                                                                            <div class="col-12 view-item">
+                                                                                Model Description:
+                                                                                <div  class="value" app-view-description>
+                                                                                    The next generation in the successful line, the Leica S offers increased imaging quality and sensor sensitivity, predictive autofocus, higher speed and improved handling. Numerous enhanced functions contribute to the camera's further acceleration and greater security of the professional photographic workflow.
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 view-item">
+                                                                                Added On: <span app-view-created class="value">20 Jan, 05 2020</span>
+                                                                            </div>
+                                                                            <div class="col-12 view-item">
+                                                                                Last Updated On: <span app-view-updated class="value">20 Jan, 05 2020</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div app-edit-box class="modal fade" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="login-card card-block modal-body">
+                                                <div class="md-float-material">
+                                                    <div class="card m-t-15">
+                                                        <div class="auth-box card-block">
+                                                            <div class="row m-b-20">
+                                                                <div class="col-md-12">
+                                                                    <h4 class="text-left txt-primary">
+                                                                        <img top-view-brand-logo class="model-icon" src="browser/images/brands/brand.jpg">
+                                                                        Edit "<span top-view-brand-name>Brand Name, Model name</span>"
+                                                                    </h4>
                                                                 </div>
                                                             </div>
                                                             <div class="card-block">
                                                                 <form method="post" app-model-update>
-                                                                    <div class="form-group">
-                                                                        <label class="form-label">Select Brand</label>
-                                                                        <select name="brand" class="form-control form-control-info" app-model-brand>
-                                                                            <option value="">Select Brand name</option>
-                                                                            <?php
-                                                                            foreach ($brandList as $item){
-                                                                                $id = $item->id;
-                                                                                $name = $item->name;
-                                                                                echo "<option value='$id'>$name</option>";
-                                                                            }
-                                                                            ?>
-                                                                        </select>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 col-sm-12">
+                                                                            <div class="row model-hold">
+                                                                                <img app-view-banner src="browser/images/models/model.jpg" class="col-12 main-images">
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-file>
+                                                                                <input type="hidden" model-link name="url">
+                                                                                <div class="img-loader" model-loader>
+                                                                                    <i class="fa fa-spinner fa-spin"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 sol-sm-12">
+                                                                            <div class="row">
+                                                                                <img app-view-sideleft src="browser/images/models/model-left.jpg" class="col-4 side-images">
+                                                                                <img app-view-sideright src="browser/images/models/model-right.jpg" class="col-4 side-images">
+                                                                                <img app-view-sidetop src="browser/images/models/model-top.jpg" class="col-4 side-images">
+                                                                                <img app-view-sidedown src="browser/images/models/model-bottom.jpg" class="col-4 side-images">
+                                                                                <img app-view-sidefront src="browser/images/models/model-front.jpg" class="col-4 side-images">
+                                                                                <img app-view-sideback src="browser/images/models/model-back.jpg" class="col-4 side-images">
+
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-left-file>
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-right-file>
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-top-file>
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-down-file>
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-front-file>
+                                                                                <input type="file" accept="image/jpg,image/jpeg,image/png" class="model-file" model-side-file model-side-back-file>
+
+                                                                                <input type="hidden" model-side-url name="left-url">
+                                                                                <input type="hidden" model-side-url name="right-url">
+                                                                                <input type="hidden" model-side-url name="top-url">
+                                                                                <input type="hidden" model-side-url name="down-url">
+                                                                                <input type="hidden" model-side-url name="front-url">
+                                                                                <input type="hidden" model-side-url name="back-url">
+
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <input class="form-control" name="name"  placeholder="Model Name"/>
-                                                                        <input type="hidden" app-model-id name="id">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <button class="btn btn-primary" type="submit">Update Model</button>
+                                                                    <div class="row pt-3">
+                                                                        <div class="col-md-6 col-sm-12">
+                                                                            <input type="hidden" app-model-id name="id">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Select Brand</label>
+                                                                                <select name="brand" class="form-control form-control-info" view-brand>
+                                                                                    <option value="">Select Brand name</option>
+                                                                                    <?php
+                                                                                    foreach ($brandList as $item){
+                                                                                        $id = $item->id;
+                                                                                        $name = $item->name;
+                                                                                        echo "<option value='$id'>$name</option>";
+                                                                                    }
+                                                                                    ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <input class="form-control" name="name" view-model placeholder="Model Name"/>
+                                                                            </div>
+                                                                            <div class="form-group input-group">
+                                                                                <label class="input-group-addon">$</label>
+                                                                                <input class="form-control" name="price" view-price placeholder="Model Price"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Model Description</label>
+                                                                                <textarea class="form-control" rows="10" style="min-height:200px;max-height:300px" name="description" view-description placeholder="Model Description"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <p class="title">Features</p>
+                                                                            <div app-features>
+                                                                                <div class="row" app-feature>
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="form-group">
+                                                                                            <input class="form-control" name="featureName[]" placeholder="Name">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <input class="form-control" name="featureValue[]" placeholder="Value">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <button class="btn btn-primary">Add</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <button class="btn btn-primary" type="submit">Update Model</button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -137,6 +324,7 @@ $brandList = $Brand->Listing();
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>

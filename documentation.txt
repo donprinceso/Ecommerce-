@@ -1,8 +1,0 @@
-Query Builder
-
-$qb = new $controller->QueryBuilder();
-
-$res = $qb->Get('table_name','field1','field2'....);
-$qb->Add('table_name',['field1'=>'value1'],['field2'=>'value2']....);
-
-$res->Filter('field','value',[QueryBuilder::condition]);

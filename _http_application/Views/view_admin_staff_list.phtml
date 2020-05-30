@@ -1,0 +1,271 @@
+<?php
+
+use application\database\Database;
+use model\General;
+use model\Staff;
+
+$db = new Database();
+$Staff = new Staff($db);
+$General = new General($db);
+$Listing = $Staff->Listing();
+?>
+<div class="pcoded-inner-content staff-list" app-staff>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row align-items-end mb-3">
+                <div class="col-lg-8">
+                    <div class="page-header-title">
+                        <div class="d-inline">
+                            <h4>List Staffs</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:"> <i class="feather icon-home"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="javascript:">Staff</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="javascript:">List Staffs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card container-fluid">
+                            <div class="card-header">
+                                <h5>Staffs</h5>
+                            </div>
+                            <div class="card-block">
+
+                                <table app-table class="table table-striped table-bordered nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>SSN</th>
+                                        <th>City</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if(count($Listing)){
+                                        foreach ($Listing as $item){
+                                            $id = $item->id;
+                                            $name = $item->name;
+                                            $email = $item->email;
+                                            $phone = $item->phone;
+                                            $ssn = $item->ssn;
+                                            $city = $item->city;
+                                            $created = $General->processDate($item->created);
+                                            ?>
+                                            <tr app-staff-id="<?=$id?>">
+                                                <td><?=$id?></td>
+                                                <td app-update-name><?=$name?></td>
+                                                <td app-update-email><?=$email?></td>
+                                                <td app-update-phone><?=$phone?></td>
+                                                <td app-update-ssn><?=$ssn?></td>
+                                                <td app-update-city><?=$city?></td>
+                                                <td><?=$created?></td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button app-view class="btn btn-sm btn-success"><i class="fa fa-id-card"></i></button>
+                                                        <button app-edit class="btn btn-sm btn-info"><i class="fa fa-pencil-square"></i></button>
+                                                        <button app-delete class="btn btn-sm btn-danger"><i class="fa fa-times-circle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+
+                                <!-------MODAL BEGIN HERE--->
+                                <div app-view-box class="modal fade" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="login-card card-block modal-body">
+                                            <div class="md-float-material">
+                                                <div class="card m-t-15">
+                                                    <div class="auth-box card-block">
+                                                        <div class="row m-b-20">
+                                                            <div class="col-md-12">
+                                                                <h4 class="text-left txt-primary">
+                                                                    <img app-top-view-avatar class="model-icon" src="browser/images/avatar.png">
+                                                                    <span app-top-view-name>Full Name</span>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <div class="row">
+                                                                <div class="offset-md-3 col-md-6 offset-sm-0 col-sm-12">
+                                                                    <div class="row">
+                                                                        <img app-view-avatar src="browser/images/avatar.png" class="col-12 main-images">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row pt-5">
+                                                                <div class="col-md-6">
+                                                                    <div class="field">
+                                                                        <div class="name">Name</div>
+                                                                        <div class="value" app-view-name>Kingsley Okoronkwo</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Gender</div>
+                                                                        <div class="value" app-view-gender>Male</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Marital Status</div>
+                                                                        <div class="value" app-view-maritalstatus>Single</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Residence Address</div>
+                                                                        <div class="value" app-view-residence></div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">City</div>
+                                                                        <div class="value" app-view-city></div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Country</div>
+                                                                        <div class="value" app-view-country></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="field">
+                                                                        <div class="name">Secret Security Number</div>
+                                                                        <div class="value" app-view-ssn>123456789</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Phone</div>
+                                                                        <div class="value" app-view-phone>08111926324</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Email</div>
+                                                                        <div class="value" app-view-email>kingpjweb@gmail.com</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Last Update</div>
+                                                                        <div class="value" app-view-updated>N/A</div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="name">Created</div>
+                                                                        <div class="value" app-view-created>N/A</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div app-edit-box class="modal fade" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="login-card card-block modal-body">
+                                            <div class="md-float-material">
+                                                <div class="card m-t-15">
+                                                    <div class="auth-box card-block">
+                                                        <div class="row m-b-20">
+                                                            <div class="col-md-12">
+                                                                <h4 class="text-left txt-primary">
+                                                                    <img app-top-view-avatar class="model-icon" src="browser/images/avatar.png">
+                                                                    Edit <span app-top-view-name>Full Name</span>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <form app-staff-update>
+                                                                <div class="row">
+                                                                    <div class="offset-md-3 col-md-6 offset-sm-0 col-sm-12">
+                                                                        <input type="hidden" name="id"/>
+                                                                        <div class="row main-img">
+                                                                            <img app-view-avatar src="browser/images/avatar.png" class="col-12 main-images">
+                                                                            <input type="file" accept="image/jpg,image/jpeg,image/png" class="main-file" app-avatar-file>
+                                                                            <input type="hidden" name="avatar">
+                                                                            <div class="img-loader" app-avatar-loader>
+                                                                                <i class="fa fa-spinner fa-spin"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row pt-5">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <input class="form-control" name="name" placeholder="FUll Name"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <select type="text" name="gender" class="form-control">
+                                                                                <option value="">Gender</option>
+                                                                                <option value="male">Male</option>
+                                                                                <option value="female">Female</option>
+                                                                                <option value="other">Other</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <select type="text" name="maritalStatus" class="form-control">
+                                                                                <option value="">Marital Status</option>
+                                                                                <option value="single">Single</option>
+                                                                                <option value="married">Married</option>
+                                                                                <option value="divorced">Divorced</option>
+                                                                                <option value="other">Other</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input type="text" name="country" class="form-control" placeholder="Country">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input type="text" name="city" class="form-control" placeholder="City">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <input type="text" name="ssn" class="form-control" placeholder="Social Security Number (Optional)">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input type="text" name="email" class="form-control" placeholder="Email">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input type="text" name="phone" class="form-control" placeholder="Phone number">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <textarea type="text" name="residenceAddress" rows="5" style="resize:none" class="form-control" placeholder="Residence Address"></textarea>
+                                                                        </div>
+                                                                        <button class="btn pull-right btn-info" type="submit">Update</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

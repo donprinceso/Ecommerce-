@@ -96,10 +96,30 @@ class Brand
         return $result;
     }
 
+    public function RemoveLogo($id){
+        $database = $this->db;
+        $item = $database("SELECT image FROM brands WHERE id=?",[$id])->fetchArrayOpt();
+        $image = Url::get_server_upload_root_url($item->image);
+        return (Url::fileRemove($image));
+    }
+
     public function Remove(int $id){
         $database = $this->db;
         $delete = $database("DELETE FROM brands WHERE id=:id",[':id'=>$id]);
         return $delete->getStatement()->rowCount();
+    }
+
+
+    public function GetName($id){
+        $database = $this->db;
+        $listname = $database("SELECT name FROM brands WHERE id=:id",["id"=>$id])->fetchArrayOpt();
+        return $listname->name;
+    }
+
+    public function GetIcon($id){
+        $database = $this->db;
+        $listname = $database("SELECT image FROM brands WHERE id=:id",["id"=>$id])->fetchArrayOpt();
+        return Url::Url_upload($listname->image);
     }
 
 }

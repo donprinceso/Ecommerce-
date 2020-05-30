@@ -5,6 +5,7 @@ namespace model;
 
 
 use application\database\Database;
+use application\locations\Url;
 
 class General
 {
@@ -18,7 +19,7 @@ class General
         }
     }
 
-
+    const appName = "Tele Tech Ltd.";
 
     public $imageAccepted = ['image/jpg','image/jpeg','image/png'];
     public $imageSize = 1500;
@@ -28,5 +29,27 @@ class General
     //brand
     public $imageBrandSize = 600;
     public $imageBrandQuality = 90;
+
+    public $currencySymbol = "$";
+    public $dateFormat = "l j F Y (h:iA)";
+
+    public function processPrice($price){
+        $price = floatval($price);
+        return $this->currencySymbol.number_format($price,2);
+    }
+
+    public function processImage($link){
+        return Url::Url_upload($link);
+    }
+
+    public function processDate($date){
+        if(is_null($date) or empty($date)){
+           return "N/A";
+        }
+        $date = floatval($date);
+        return date($this->dateFormat,$date);
+    }
+
+
 
 }

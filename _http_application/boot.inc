@@ -8,6 +8,8 @@ if(!defined("King_Framework")) die("You cannot access boot file directly");
 //starting a session
 session_start();
 
+date_default_timezone_set("UTC");
+
 $configure = "configure.inc";
 $dirname = dirname(__FILE__);
 require_once $dirname.DIRECTORY_SEPARATOR.$configure;

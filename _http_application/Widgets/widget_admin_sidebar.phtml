@@ -24,64 +24,40 @@ use model\Links;
 
                 </a>
             </li>
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
-                    <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+            <li class="">
+                <a href="javascript:" app-link="<?=Links::adm_brands?>">
+                    <span class="pcoded-micon"><i class="feather icon-box"></i></span>
                     <span class="pcoded-mtext">Products</span>
-
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="#" app-link="<?=Links::adm_product_add?>">
-                            <span class="pcoded-mtext">Add product</span>
-                        </a>
-                    </li>
-
-                    <li class=" ">
-                        <a href="#" app-link="<?=Links::adm_product_list?>">
-                            <span class="pcoded-mtext">Lists Products</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="">
-                <a href="#">
-                    <span class="pcoded-micon"><i class="feather icon-check"></i></span>
-                    <span class="pcoded-mtext">Stock Products</span>
                 </a>
             </li>
             <li class="">
-                <a href="#" app-link="<?=""?>">
+                <a href="#" app-link="<?=Links::adm_tickets?>">
                     <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
                     <span class="pcoded-mtext">Tickets</span>
-
                 </a>
-
             </li>
             <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
+                <a href="javascript:">
                     <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
                     <span class="pcoded-mtext">Staff</span>
-
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="#">
+                    <li>
+                        <a href="#" app-link="<?=Links::adm_staff_add?>">
                             <span class="pcoded-mtext">Add Staff</span>
                         </a>
                     </li>
                     <li class=" ">
-                        <a href="#">
+                        <a href="#" app-link="<?=Links::adm_staff_list?>">
                             <span class="pcoded-mtext">List Staffs</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
+                <a href="javascript:">
                     <span class="pcoded-micon"><i class="feather icon-settings"></i></span>
                     <span class="pcoded-mtext">Settings</span>
-
                 </a>
                 <ul class="pcoded-submenu">
                     <li class="">
@@ -111,75 +87,29 @@ use model\Links;
                             <span class="pcoded-mtext">Passwords</span>
                         </a>
                     </li>
-
-                    <li class=" ">
-                        <a href="#" target="_blank">
-                            <span class="pcoded-mtext">Reviews</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
         </ul>
-        <div class="pcoded-navigatio-lavel">News Feed</div>
+        <div class="pcoded-navigatio-lavel">Jobs</div>
         <ul class="pcoded-item pcoded-left-item">
             <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
+                <a href="javascript:">
                     <span class="pcoded-micon"><i class="feather icon-box"></i></span>
-                    <span class="pcoded-mtext">News</span>
+                    <span class="pcoded-mtext">Jobs</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="#">
-                            <span class="pcoded-mtext">Add News</span>
+                    <li>
+                        <a href="#" app-link="<?=Links::adm_jobs_add?>">
+                            <span class="pcoded-mtext">Add Jobs</span>
                         </a>
                     </li>
-                    <li class=" ">
-                        <a href="#">
-                            <span class="pcoded-mtext">News List</span>
+                    <li>
+                        <a href="#" app-link="<?=Links::adm_jobs_list?>">
+                            <span class="pcoded-mtext">Posted Jobs</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
-                    <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                    <span class="pcoded-mtext">Notifications</span>
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="#">
-                            <span class="pcoded-mtext">Notifi</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="#l">
-                            <span class="pcoded-mtext">Assign Notification</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="#">
-                            <span class="pcoded-mtext">Post Notification</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-        </ul>
-        <div class="pcoded-navigatio-lavel">Reveun/Payment</div>
-        <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu">
-                <a href="#">
-                    <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                    <span class="pcoded-mtext">Reveun</span>
-                </a>
-            </li>
-            <li class="pcoded-hasmenu">
-                <a href="#">
-                    <span class="pcoded-micon"><i class="feather icon-edit-1"></i></span>
-                    <span class="pcoded-mtext">Payment</span>
-                </a>
-            </li>
-
         </ul>
     </div>
 </nav>

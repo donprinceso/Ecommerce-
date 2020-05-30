@@ -2,6 +2,7 @@
 
 namespace application;
 use application\Init\PagesController;
+use application\security\Hashing;
 use model\Admin;
 
 class Pages extends PagesController{
@@ -86,6 +87,12 @@ class Pages extends PagesController{
         if ($this->view->Exist("public-faq")){
             $this->view->Load("public-faq");
         }
+    }
+
+    public function hash($pass = "123456"){
+        $con = new Application();
+       echo $con->Hashing()->PasswordHash($pass);
+
     }
 
     public  function product(){
